@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Ground
   - FX_AudioSource
+  - Tile
   layers:
   - Default
   - TransparentFX
