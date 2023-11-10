@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
     //public GameObject tilePlayer;
+    public GameObject pointer;
+    private Vector3 difference;
+
     private CharacterController controller;
     public float speed = 12f;
     public float gravity = -9.81f * 2f;
@@ -16,6 +19,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Start() {
         controller = GetComponent<CharacterController>();
+        //difference = this.gameObject.transform.position - pointer.gameObject.transform.position;
     }
 
     void Update() {
@@ -35,6 +39,16 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             isMoving = false;
         }
+
+        Vector3 offset = new Vector3(0f, 0f, 2f);
+        Vector3 desiredPosition = this.gameObject.transform.TransformPoint(offset);
+
+        // Set the position of this object to the desired position
+        pointer.transform.position = new Vector3(desiredPosition.x, pointer.transform.position.y, desiredPosition.z);
+
+        // Rotate this object to match the rotation of the reference object
+        //pointer.transform.rotation = Quaternion.Euler(this.gameObject.transform.rotation.eulerAngles.x, 0f, 0f);
+        //pointer.transform.position = this.transform.position + difference;
     }
 
     private void OnCollisionEnter(Collision collision) {
