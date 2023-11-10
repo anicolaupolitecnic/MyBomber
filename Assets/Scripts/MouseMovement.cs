@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseMovement : MonoBehaviour {
+    //public GameObject cam;
     public float mouseSensitivity;
     float xRotation = 0f;
     float yRotation = 0f;
@@ -23,7 +24,8 @@ public class MouseMovement : MonoBehaviour {
         xRotation = Mathf.Clamp(xRotation, topClamp, bottomClamp);
 
         yRotation += mouseX;
-
+        
+        //cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
         this.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
     }

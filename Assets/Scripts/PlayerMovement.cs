@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-    public GameObject tilePlayer;
+    //public GameObject tilePlayer;
     private CharacterController controller;
     public float speed = 12f;
     public float gravity = -9.81f * 2f;
@@ -39,8 +39,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.CompareTag("Tile")) {
-            Debug.Log("TilePlayer aaa");
-            tilePlayer = collision.gameObject;
+            //Debug.Log("TilePlayer aaa");
+            //tilePlayer = collision.gameObject;
         }
     }
 }

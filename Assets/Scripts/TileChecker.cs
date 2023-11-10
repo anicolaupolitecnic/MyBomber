@@ -9,6 +9,7 @@ public class TileChecker : MonoBehaviour {
     GameObject newBomb;
 
     void Update() {
+        this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x,0,this.gameObject.transform.position.z);
         if (Input.GetMouseButtonDown(0)) {
             if (tileTarget.transform.childCount == 0) {
                 if (GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<PlayerTileChecker>().tilePlayer != tileTarget) {
