@@ -10,23 +10,24 @@ public class MouseMovement : MonoBehaviour {
 
     public float topClamp = -90f;
     public float bottomClamp = 90f;
+    bool isPlayerAlive;
     
     void Start() {
+        isPlayerAlive = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive;
         Cursor.lockState = CursorLockMode.Locked;
 
     }
 
     void Update() {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (isPlayerAlive) {
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, topClamp, bottomClamp);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, topClamp, bottomClamp);
 
-        yRotation += mouseX;
-        
-        //cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        this.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-
+            yRotation += mouseX;
+            this.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        }
     }
 }

@@ -11,11 +11,13 @@ public class Explode: MonoBehaviour {
 	private Material mat;
 	private Transform transf;
 
+/*
 	void Start() {
-		Invoke("Main", delay);
+		Invoke("DestroyCube", delay);
 	}
+*/
 
-	void Main() {
+	public void DestroyCube() {
 		gameObject.GetComponent<Collider>().enabled = false;
 		mat = gameObject.GetComponent<Renderer>().material;
 		transf = gameObject.transform;
@@ -47,7 +49,7 @@ public class Explode: MonoBehaviour {
 		cube.transform.position = firstCube + Vector3.Scale(coordinates, cube.transform.localScale);
 		
 		Rigidbody rb = cube.AddComponent<Rigidbody>();
-		rb.AddExplosionForce(force, transf.position, radius);
+		rb.AddExplosionForce(force, this.gameObject.transform.position, radius);
 
 		StartCoroutine(DestroyCubeAfterTime(cube, lifeTime));
 	}

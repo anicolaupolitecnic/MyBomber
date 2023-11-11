@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class PlaceTheBomb : MonoBehaviour {
     [SerializeField] private GameObject bomb;
-    private GameObject tileTarget;
+    //private GameObject tileTarget;
     GameObject newBomb;
 
     void Update() {
@@ -35,7 +35,7 @@ public class PlaceTheBomb : MonoBehaviour {
 */
         }
     }
-
+/*
     IEnumerator DestroyBomb(GameObject bomb, float time) {
         yield return new WaitForSeconds(time);
     }
@@ -46,4 +46,5 @@ public class PlaceTheBomb : MonoBehaviour {
             //Debug.Log("Tile: " + collision.gameObject.name);
         }
     }
+*/
 }

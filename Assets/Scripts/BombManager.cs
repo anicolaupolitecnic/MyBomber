@@ -12,18 +12,10 @@ public class BombManager : MonoBehaviour {
 
     void Update() {
         if (Time.time - initTime > timer) {
-            // Raycast in the up direction
-            RaycastDirection(Vector3.up);
-
-            // Raycast in the down direction
-            RaycastDirection(Vector3.down);
-
-            // Raycast in the left direction
+            RaycastDirection(Vector3.forward);
+            RaycastDirection(Vector3.back);
             RaycastDirection(Vector3.left);
-
-            // Raycast in the right direction
             RaycastDirection(Vector3.right);
-
             Destroy(this.gameObject);
         }
     }
@@ -31,16 +23,19 @@ public class BombManager : MonoBehaviour {
     void RaycastDirection(Vector3 direction) {
         float rayLength = 2.0f;
 
-        // Create a ray from the current position in the specified direction
-        Ray ray = new Ray(transform.position, direction);
+        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1f, transform.position.z), direction);
+        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red, 1f);
 
-        // Perform the raycast
         if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength)) {
-            // Collision detected, do something
-            Debug.Log($"Collision detected in {direction} direction. Hit object: {hitInfo.collider.gameObject.name}");
-        } else {
-            // No collision detected
-            Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.green);
+            if (hitInfo.collider.CompareTag("Block")) {
+                Destroy(hitInfo.collider.gameObject);
+                //hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
+            }
+            if (hitInfo.collider.CompareTag("Player")) {
+                Debug.Log("YOU ARE DEAD");
+                //GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
+                //Invoke("ReloadScene", 2f);
+            }
         }
     }
 }

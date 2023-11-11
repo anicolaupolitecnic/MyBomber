@@ -10,6 +10,7 @@ TagManager:
   - FX_AudioSource
   - Tile
   - Block
+  - GameManager
   layers:
   - Default
   - TransparentFX
