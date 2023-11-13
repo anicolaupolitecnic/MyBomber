@@ -32,10 +32,16 @@ public class BombManager : MonoBehaviour {
                 //hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
             }
             if (hitInfo.collider.CompareTag("Player")) {
-                Debug.Log("YOU ARE DEAD");
-                //GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
-                //Invoke("ReloadScene", 2f);
+                Debug.Log("0");
+                GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
+                StartCoroutine(ReloadSceneAfterTime(2f));
             }
         }
     }
+
+    private IEnumerator ReloadSceneAfterTime(float delay) {
+        Debug.Log("1");
+        yield return new WaitForSeconds(delay);
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().ReloadScene(); 
+    } 
 }
