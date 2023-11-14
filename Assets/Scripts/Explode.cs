@@ -3,6 +3,8 @@ using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class Explode: MonoBehaviour {
+	public LayerMask playerLayer; // Assign Player layer in the Inspector
+
 	public int cubesPerAxis = 8;
     public float delay = 1f;
 	public float force = 300f;
@@ -10,12 +12,6 @@ public class Explode: MonoBehaviour {
 	public float lifeTime = 3f;
 	private Material mat;
 	private Transform transf;
-
-/*
-	void Start() {
-		Invoke("DestroyCube", delay);
-	}
-*/
 
 	public void DestroyCube() {
 		gameObject.GetComponent<Collider>().enabled = false;
@@ -46,11 +42,17 @@ public class Explode: MonoBehaviour {
 		cube.transform.localScale = transf.localScale / cubesPerAxis;
 		
 		Vector3 firstCube = transf.position - transf.localScale/ 2 + cube.transform. localScale / 2;
-		cube.transform.position = firstCube + Vector3.Scale(coordinates, cube.transform.localScale);
 		
 		Rigidbody rb = cube.AddComponent<Rigidbody>();
-		rb.AddExplosionForce(force, this.gameObject.transform.position, radius);
-
+		//rb.AddExplosionForce(force, this.gameObject.transform.position, radius);
 		StartCoroutine(DestroyCubeAfterTime(cube, lifeTime));
 	}
+
+
+	 private void OnCollisionEnter(Collision collision) {
+        if (playerLayer == (playerLayer | (1 << collision.gameObject.layer))) {
+            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+        }
+    }
+
 }

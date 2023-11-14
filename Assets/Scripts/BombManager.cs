@@ -5,6 +5,10 @@ using UnityEngine;
 public class BombManager : MonoBehaviour {
     [SerializeField] private float timer;
     private float initTime;
+    [SerializeField] private GameObject explosion;
+    private bool destroyBomb = false;
+    [SerializeField] private float force;
+	[SerializeField] private float radius;
 
     void Start() {
         initTime = Time.time;
@@ -12,12 +16,34 @@ public class BombManager : MonoBehaviour {
 
     void Update() {
         if (Time.time - initTime > timer) {
-            RaycastDirection(Vector3.forward);
-            RaycastDirection(Vector3.back);
-            RaycastDirection(Vector3.left);
-            RaycastDirection(Vector3.right);
-            Destroy(this.gameObject);
+            if (!destroyBomb) {
+                destroyBomb = true;
+                RaycastDirection(Vector3.forward);
+                RaycastDirection(Vector3.back);
+                RaycastDirection(Vector3.left);
+                RaycastDirection(Vector3.right);
+                DisableAllChildrenRecursive(this.gameObject.transform);
+                explosion.SetActive(true);
+                explosion.GetComponent<ParticleSystem>().Stop();
+                explosion.GetComponent<ParticleSystem>().Clear();
+                explosion.GetComponent<ParticleSystem>().Play();
+                this.gameObject.GetComponent<Rigidbody>().AddExplosionForce(force, this.gameObject.transform.position, radius);
+                this.gameObject.GetComponent<Collider>().enabled = false;
+                StartCoroutine(DestroyBomb(this.gameObject, 5f));
+            }
         }
+    }
+
+    void DisableAllChildrenRecursive(Transform parent) {
+        foreach (Transform child in parent) {
+            child.gameObject.SetActive(false);
+            DisableAllChildrenRecursive(child.transform);
+        }
+    }
+
+    IEnumerator DestroyBomb(GameObject bomb, float time) {
+        yield return new WaitForSeconds(time);
+        Destroy(bomb);
     }
 
     void RaycastDirection(Vector3 direction) {
@@ -28,13 +54,13 @@ public class BombManager : MonoBehaviour {
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength)) {
             if (hitInfo.collider.CompareTag("Block")) {
-                Destroy(hitInfo.collider.gameObject);
-                //hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
+                //Destroy(hitInfo.collider.gameObject);
+                hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
             }
             if (hitInfo.collider.CompareTag("Player")) {
                 Debug.Log("0");
                 GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
-                StartCoroutine(ReloadSceneAfterTime(2f));
+                //StartCoroutine(ReloadSceneAfterTime(2f));
             }
         }
     }
