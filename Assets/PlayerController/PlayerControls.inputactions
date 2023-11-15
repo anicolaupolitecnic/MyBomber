@@ -168,17 +168,6 @@
                 },
                 {
                     "name": "",
-                    "id": "80d34656-a3b9-471a-908e-cb94cf825ec4",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0d6dc26d-e78c-4c76-aa4a-339c5cfaa0bd",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",

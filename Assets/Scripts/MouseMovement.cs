@@ -28,6 +28,8 @@ public class MouseMovement : MonoBehaviour {
 
             yRotation += mouseX;
             this.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            //Debug.Log("xRot: " + xRotation);
+            //Debug.Log("yRot: " + yRotation);
         }
     }
 }

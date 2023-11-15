@@ -25,13 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4951441182708652949}
   m_LocalRotation: {x: -0.088016756, y: -0.62643653, z: -0.10775992, w: 0.7669538}
-  m_LocalPosition: {x: 0.12081224, y: -0.23583913, z: 0.6803975}
+  m_LocalPosition: {x: 0.08481224, y: -0.81383914, z: 0.3703977}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4951441184225928043}
-  m_Father: {fileID: 4951441183840875745}
-  m_RootOrder: 2
+  m_Father: {fileID: 4951441183893518748}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -15.665, y: -78.032, z: -3.276}
 --- !u!65 &4951441182708652947
 BoxCollider:
@@ -57,7 +57,6 @@ GameObject:
   - component: {fileID: 4951441183840875745}
   - component: {fileID: 4951441183840875744}
   - component: {fileID: 4951441183840875747}
-  - component: {fileID: 4951441183840875746}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -79,7 +78,6 @@ Transform:
   m_Children:
   - {fileID: 4951441183893518748}
   - {fileID: 4951441184492068314}
-  - {fileID: 4951441182708652946}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -96,8 +94,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointer: {fileID: 6230236473982163434, guid: 49c89284ccda68b4d840508c935ab90f, type: 3}
+  bomb: {fileID: 3169547791655665870, guid: 15479f224da1d9947a1d778a321e9f6f, type: 3}
+  cam: {fileID: 4951441183893518751}
   speed: 12
   gravity: -19.62
+  mouseSensitivity: 0
+  topClamp: 0
+  bottomClamp: 0
 --- !u!143 &4951441183840875747
 CharacterController:
   m_ObjectHideFlags: 0
@@ -116,21 +119,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4951441183840875746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4951441183840875749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ac82d6347599f34b890813b2269385e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSensitivity: 180
-  topClamp: -90
-  bottomClamp: 90
 --- !u!1 &4951441183861269223
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +232,8 @@ Transform:
   m_LocalPosition: {x: 0.036, y: 0.57799995, z: 0.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4951441182708652946}
   m_Father: {fileID: 4951441183840875745}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

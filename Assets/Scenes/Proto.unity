@@ -1341,6 +1341,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
         type: 3}
+      propertyPath: bomb
+      value: 
+      objectReference: {fileID: 3169547791655665870, guid: 15479f224da1d9947a1d778a321e9f6f,
+        type: 3}
+    - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
+        type: 3}
       propertyPath: speed
       value: 12
       objectReference: {fileID: 0}
@@ -1353,6 +1359,21 @@ PrefabInstance:
         type: 3}
       propertyPath: distance
       value: 1.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
+        type: 3}
+      propertyPath: topClamp
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
+        type: 3}
+      propertyPath: bottomClamp
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
+        type: 3}
+      propertyPath: mouseSensitivity
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 4951441183840875745, guid: 95b59588bd026da489083d246f99caa5,
         type: 3}
@@ -1423,16 +1444,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951441183840875746, guid: 95b59588bd026da489083d246f99caa5,
-        type: 3}
-      propertyPath: topClamp
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951441183840875746, guid: 95b59588bd026da489083d246f99caa5,
-        type: 3}
-      propertyPath: bottomClamp
-      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 4951441183840875749, guid: 95b59588bd026da489083d246f99caa5,
         type: 3}
@@ -1552,7 +1563,7 @@ PrefabInstance:
     - target: {fileID: 6230236473982163431, guid: 49c89284ccda68b4d840508c935ab90f,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6230236473982163434, guid: 49c89284ccda68b4d840508c935ab90f,
         type: 3}
