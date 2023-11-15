@@ -168,6 +168,17 @@
                 },
                 {
                     "name": "",
+                    "id": "8079a322-c91b-460a-a161-c200c42585c4",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "0d6dc26d-e78c-4c76-aa4a-339c5cfaa0bd",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
@@ -181,6 +192,17 @@
                     "name": "",
                     "id": "3fc09af6-ecd6-440b-a3ea-3cf35ebf2760",
                     "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f815e08b-c5e6-4a4c-b437-3bb839ad9d13",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

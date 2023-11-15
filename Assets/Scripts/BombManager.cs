@@ -27,7 +27,6 @@ public class BombManager : MonoBehaviour {
                 explosion.GetComponent<ParticleSystem>().Stop();
                 explosion.GetComponent<ParticleSystem>().Clear();
                 explosion.GetComponent<ParticleSystem>().Play();
-                //this.gameObject.GetComponent<Rigidbody>().AddExplosionForce(force, this.gameObject.transform.position, radius);
                 this.gameObject.GetComponent<Collider>().enabled = false;
                 StartCoroutine(DestroyBomb(this.gameObject, 5f));
             }
@@ -50,7 +49,7 @@ public class BombManager : MonoBehaviour {
         float rayLength = 2.0f;
 
         Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1f, transform.position.z), direction);
-        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red, 1f);
+        Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.red, 1f);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength)) {
             if (hitInfo.collider.CompareTag("Block")) {
