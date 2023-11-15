@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void ReloadScene() {
-        Debug.Log("2");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
     }
 }

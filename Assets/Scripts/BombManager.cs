@@ -27,7 +27,7 @@ public class BombManager : MonoBehaviour {
                 explosion.GetComponent<ParticleSystem>().Stop();
                 explosion.GetComponent<ParticleSystem>().Clear();
                 explosion.GetComponent<ParticleSystem>().Play();
-                this.gameObject.GetComponent<Rigidbody>().AddExplosionForce(force, this.gameObject.transform.position, radius);
+                //this.gameObject.GetComponent<Rigidbody>().AddExplosionForce(force, this.gameObject.transform.position, radius);
                 this.gameObject.GetComponent<Collider>().enabled = false;
                 StartCoroutine(DestroyBomb(this.gameObject, 5f));
             }
@@ -54,19 +54,16 @@ public class BombManager : MonoBehaviour {
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength)) {
             if (hitInfo.collider.CompareTag("Block")) {
-                //Destroy(hitInfo.collider.gameObject);
                 hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
             }
             if (hitInfo.collider.CompareTag("Player")) {
-                Debug.Log("0");
-                GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
-                //StartCoroutine(ReloadSceneAfterTime(2f));
+                StartCoroutine(ReloadSceneAfterTime(2f));
             }
         }
     }
 
     private IEnumerator ReloadSceneAfterTime(float delay) {
-        Debug.Log("1");
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
         yield return new WaitForSeconds(delay);
         GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().ReloadScene(); 
     } 

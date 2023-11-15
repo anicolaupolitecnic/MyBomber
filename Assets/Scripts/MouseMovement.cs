@@ -19,7 +19,7 @@ public class MouseMovement : MonoBehaviour {
     }
 
     void Update() {
-        if (isPlayerAlive) {
+        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 

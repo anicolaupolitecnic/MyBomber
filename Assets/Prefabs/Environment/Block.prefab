@@ -113,6 +113,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  miniBlock: {fileID: 2485634807795435328, guid: fc7270f386e0a5243a9077c829af07f5,
+    type: 3}
   cubesPerAxis: 8
   delay: 0.1
   force: 300
