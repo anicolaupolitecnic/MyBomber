@@ -13,7 +13,7 @@ public class BombManager : MonoBehaviour {
 
     void Start() {
         initTime = Time.time;
-        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();   
     }
 
     void Update() {
@@ -26,6 +26,7 @@ public class BombManager : MonoBehaviour {
     }
 
     void explodeBomb() {
+        gManager.DecNumBombsThrown();
         DisableAllChildrenRecursive(this.gameObject.transform);
         this.gameObject.GetComponent<Collider>().enabled = false;
         destroyBomb = true;

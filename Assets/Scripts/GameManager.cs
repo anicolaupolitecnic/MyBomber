@@ -8,19 +8,26 @@ using TMPro;
 public class GameManager : MonoBehaviour {
     public bool isPlayerAlive;
     public int numBombs;
+    public int numBombsThrown;
     public int numFire;
     public int numLives;
+    public GameObject spwanPoint;
+    private GameObject player;
+
     [SerializeField] private TextMeshProUGUI tInfo;
     [SerializeField] private TextMeshProUGUI tBombs;
+    [SerializeField] private TextMeshProUGUI tBombsThrown;
     [SerializeField] private TextMeshProUGUI tFire;
     [SerializeField] private TextMeshProUGUI tLives;
 
     void Awake() {
-        isPlayerAlive = true;
-        numBombs = 1;
-        numFire = 1;    
+        ResetPlayerStats();
         numLives = 3;
-        tInfo.enabled = false; 
+    }
+
+    void Start() {
+        player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = spwanPoint.transform.position;
     }
 
     public void AddLive() {
@@ -38,6 +45,16 @@ public class GameManager : MonoBehaviour {
         UpdateHUD();
     }
 
+    public void IncNumBombsThrown() {
+        numBombsThrown += 1;
+        UpdateHUD();
+    }
+
+    public void DecNumBombsThrown() {
+        numBombsThrown -= 1;
+        UpdateHUD();
+    }
+
     public void IncNumFire() {
         numFire += 1;
         UpdateHUD();
@@ -51,24 +68,35 @@ public class GameManager : MonoBehaviour {
 
     void UpdateHUD() {
         tBombs.text = ""+numBombs;
+        tBombsThrown.text = ""+numBombsThrown;
         tFire.text = ""+numFire;
         tLives.text = ""+numLives;
     }
 
-    public void ReloadScene() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    void ResetPlayerStats() {
+        isPlayerAlive = true;
+        numBombs = 1;
+        numBombsThrown = 0;
+        numFire = 1;    
+        //numLives = 3;
+        tInfo.enabled = false; 
     }
 
     public void RespawnPlayer() {
         isPlayerAlive = false;
         SubstractLive();
-        tInfo.enabled = true;
-        ReloadSceneAfterTime(2f);
-        //Invoke("ReloadScene",2f);
+        if (numLives <= 0)
+            tInfo.enabled = true;
+        else
+            StartCoroutine(ReloadSceneAfterTime(2f));
     }
 
     private IEnumerator ReloadSceneAfterTime(float delay) {
+        Debug.Log("E1");
         yield return new WaitForSeconds(delay);
-        ReloadScene();
+        tInfo.enabled = false;
+        player.transform.position = spwanPoint.transform.position;
+        ResetPlayerStats();
+        Debug.Log("E2");
     } 
 }

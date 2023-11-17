@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
     PlayerControls controls;
+    GameManager gManager;
     Vector2 move;
 
     public GameObject pointer;
@@ -40,6 +41,13 @@ public class PlayerMovement : MonoBehaviour {
         controls.Gameplay.Rotate.canceled += ctx => rotate = Vector2.zero;
     }
 
+    
+    void Start() {
+        Cursor.lockState = CursorLockMode.Locked;
+        controller = GetComponent<CharacterController>();
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    }
+
     void Action() {
         Vector3 v = pointer.gameObject.transform.position;
         v = new Vector3(v.x,v.y+8f, v.z);
@@ -52,9 +60,13 @@ public class PlayerMovement : MonoBehaviour {
                 Debug.Log("BLOCKED");
             } else if (hit.collider.CompareTag("Tile")) {
                 if (hit.collider.gameObject.transform.childCount == 0) {
-                    newBomb = Instantiate(bomb, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
-                    newBomb.GetComponent<Collider>().enabled = true;
-                    newBomb.transform.SetParent(hit.collider.gameObject.transform);
+                    if (gManager.numBombsThrown < gManager.numBombs) {
+                        gManager.IncNumBombsThrown();
+                        newBomb = Instantiate(bomb, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
+                        newBomb.GetComponent<Collider>().enabled = true;
+                        newBomb.transform.SetParent(hit.collider.gameObject.transform);
+
+                    }
                 }    
             }
         }
@@ -66,11 +78,6 @@ public class PlayerMovement : MonoBehaviour {
 
     void OnDisable() {
         controls.Gameplay.Disable();
-    }
-
-    void Start() {
-        Cursor.lockState = CursorLockMode.Locked;
-        controller = GetComponent<CharacterController>();
     }
 
     void Update() {
