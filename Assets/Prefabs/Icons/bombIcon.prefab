@@ -13,10 +13,9 @@ GameObject:
   - component: {fileID: 2367339059569615202}
   - component: {fileID: 5800429951580171771}
   - component: {fileID: 1065903376958712896}
-  - component: {fileID: 856254640662705918}
   m_Layer: 0
   m_Name: bombIcon
-  m_TagString: Untagged
+  m_TagString: Icon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,24 +107,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4312907085728858295}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.6891, y: 0.79999995, z: 0.07921}
   m_Center: {x: 0.043215245, y: -0.038437232, z: 0.00003655441}
---- !u!54 &856254640662705918
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312907085728858295}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0

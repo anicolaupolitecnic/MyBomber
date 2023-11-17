@@ -14,12 +14,6 @@ public class Explode: MonoBehaviour {
 	private Material mat;
 	private Transform transf;
 
-/*
-	void Start() {
-		Invoke("DestroyCube", delay);
-	}
-*/
-
 	public void DestroyCube() {
 		gameObject.GetComponent<Collider>().enabled = false;
 		mat = gameObject.GetComponent<Renderer>().material;

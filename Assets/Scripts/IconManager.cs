@@ -8,4 +8,11 @@ public class IconManager : MonoBehaviour {
     void Update() {
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
     }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Player")) {
+            Debug.Log("Player has entered the trigger zone!");
+            Destroy(this.gameObject);
+        }
+    }
 }

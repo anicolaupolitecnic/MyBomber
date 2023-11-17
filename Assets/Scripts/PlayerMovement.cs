@@ -40,13 +40,15 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void Action() {
-        Ray ray = new Ray(pointer.gameObject.transform.position, Vector3.down);
-        //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
+        Vector3 v = pointer.gameObject.transform.position;
+        v = new Vector3(v.x,v.y+5f, v.z);
+        Ray ray = new Ray(v, Vector3.down);
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit)) {
-            if (hit.collider.CompareTag("Block")) {
-                Debug.Log("BLOCK");
+            if (hit.collider.CompareTag("Block") || hit.collider.CompareTag("Wall")) {
+                Debug.Log("BLOCKED");
             } else if (hit.collider.CompareTag("Tile")) {
                 newBomb = Instantiate(bomb, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
                 newBomb.GetComponent<Collider>().enabled = true;
@@ -71,8 +73,9 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
             //MOVIMENT
-            Vector3 m = new Vector3(move.x, 0, move.y);
-            controller.Move(m * speed * Time.deltaTime);
+            Vector3 m = new Vector3(move.x * transform.forward.x, 0, move.y * transform.forward.z);
+            controller.Move(m.normalized * speed * Time.deltaTime);
+
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
 
@@ -93,11 +96,9 @@ public class PlayerMovement : MonoBehaviour {
             
             xRotation -= mouseX;
             xRotation = Mathf.Clamp(xRotation, topClamp, bottomClamp);
-
-            yRotation += mouseY;
-
             cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            //transform.Rotate(0f, yRotation, 0f);
+            
+            yRotation += mouseY;
             transform.localRotation = Quaternion.Euler(0f, yRotation, 0f);
         }
     }

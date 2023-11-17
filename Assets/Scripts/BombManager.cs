@@ -9,28 +9,35 @@ public class BombManager : MonoBehaviour {
     private bool destroyBomb = false;
     [SerializeField] private float force;
 	[SerializeField] private float radius;
+    private GameManager gManager;
 
     void Start() {
         initTime = Time.time;
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     void Update() {
         if (Time.time - initTime > timer) {
             if (!destroyBomb) {
                 destroyBomb = true;
-                RaycastDirection(Vector3.forward);
-                RaycastDirection(Vector3.back);
-                RaycastDirection(Vector3.left);
-                RaycastDirection(Vector3.right);
-                DisableAllChildrenRecursive(this.gameObject.transform);
-                explosion.SetActive(true);
-                explosion.GetComponent<ParticleSystem>().Stop();
-                explosion.GetComponent<ParticleSystem>().Clear();
-                explosion.GetComponent<ParticleSystem>().Play();
-                this.gameObject.GetComponent<Collider>().enabled = false;
-                StartCoroutine(DestroyBomb(this.gameObject, 5f));
+                explodeBomb();
             }
         }
+    }
+
+    void explodeBomb() {
+        destroyBomb = true;
+        RaycastDirection(Vector3.forward);
+        RaycastDirection(Vector3.back);
+        RaycastDirection(Vector3.left);
+        RaycastDirection(Vector3.right);
+        DisableAllChildrenRecursive(this.gameObject.transform);
+        explosion.SetActive(true);
+        explosion.GetComponent<ParticleSystem>().Stop();
+        explosion.GetComponent<ParticleSystem>().Clear();
+        explosion.GetComponent<ParticleSystem>().Play();
+        this.gameObject.GetComponent<Collider>().enabled = false;
+        StartCoroutine(DestroyBomb(this.gameObject, 5f));
     }
 
     void DisableAllChildrenRecursive(Transform parent) {
@@ -56,14 +63,20 @@ public class BombManager : MonoBehaviour {
                 hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
             }
             if (hitInfo.collider.CompareTag("Player")) {
-                StartCoroutine(ReloadSceneAfterTime(2f));
+                gManager.RespawnPlayer();
+                //gManager.SubstractLive();
+                //StartCoroutine(ReloadSceneAfterTime(2f));
             }
+            if (hitInfo.collider.CompareTag("Bomb")) {
+                hitInfo.collider.gameObject.GetComponent<BombManager>().explodeBomb();
+            }
+            HandleCollision(hitInfo.collider.gameObject);
         }
     }
 
-    private IEnumerator ReloadSceneAfterTime(float delay) {
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive = false;
-        yield return new WaitForSeconds(delay);
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().ReloadScene(); 
-    } 
+    void HandleCollision(GameObject other) {
+        if (other.CompareTag("Icon")) {
+            Destroy(other.gameObject);
+        }
+    }
 }
