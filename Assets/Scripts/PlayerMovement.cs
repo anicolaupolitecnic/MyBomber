@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour {
     Vector2 move;
 
     public GameObject pointer;
+    [SerializeField] private float pointerDistance;
     [SerializeField] private GameObject bomb;
     [SerializeField] private GameObject cam;
     GameObject newBomb;
@@ -41,7 +42,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Action() {
         Vector3 v = pointer.gameObject.transform.position;
-        v = new Vector3(v.x,v.y+5f, v.z);
+        v = new Vector3(v.x,v.y+8f, v.z);
         Ray ray = new Ray(v, Vector3.down);
         Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
         RaycastHit hit;
@@ -50,9 +51,11 @@ public class PlayerMovement : MonoBehaviour {
             if (hit.collider.CompareTag("Block") || hit.collider.CompareTag("Wall")) {
                 Debug.Log("BLOCKED");
             } else if (hit.collider.CompareTag("Tile")) {
-                newBomb = Instantiate(bomb, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
-                newBomb.GetComponent<Collider>().enabled = true;
-                newBomb.transform.SetParent(hit.collider.gameObject.transform);    
+                if (hit.collider.gameObject.transform.childCount == 0) {
+                    newBomb = Instantiate(bomb, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
+                    newBomb.GetComponent<Collider>().enabled = true;
+                    newBomb.transform.SetParent(hit.collider.gameObject.transform);
+                }    
             }
         }
     }
@@ -73,7 +76,8 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
             //MOVIMENT
-            Vector3 m = new Vector3(move.x * transform.forward.x, 0, move.y * transform.forward.z);
+            //Vector3 m = new Vector3(move.x * transform.forward.x, 0, move.y * transform.forward.z);
+            Vector3 m = transform.forward * move.y + transform.right * move.x;
             controller.Move(m.normalized * speed * Time.deltaTime);
 
             velocity.y += gravity * Time.deltaTime;
@@ -85,7 +89,7 @@ public class PlayerMovement : MonoBehaviour {
                 isMoving = false;
             }
 
-            Vector3 offset = new Vector3(0f, 0f, 2f);
+            Vector3 offset = new Vector3(0f, 0f, pointerDistance);
             Vector3 desiredPosition = this.gameObject.transform.TransformPoint(offset);
 
             pointer.transform.position = new Vector3(desiredPosition.x, pointer.transform.position.y, desiredPosition.z);

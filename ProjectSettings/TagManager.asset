@@ -11,8 +11,9 @@ TagManager:
   - Tile
   - Block
   - GameManager
-  - Icon
   - Bomb
+  - IconFire
+  - IconBomb
   layers:
   - Default
   - TransparentFX

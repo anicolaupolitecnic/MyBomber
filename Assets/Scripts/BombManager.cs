@@ -26,17 +26,17 @@ public class BombManager : MonoBehaviour {
     }
 
     void explodeBomb() {
+        DisableAllChildrenRecursive(this.gameObject.transform);
+        this.gameObject.GetComponent<Collider>().enabled = false;
         destroyBomb = true;
         RaycastDirection(Vector3.forward);
         RaycastDirection(Vector3.back);
         RaycastDirection(Vector3.left);
         RaycastDirection(Vector3.right);
-        DisableAllChildrenRecursive(this.gameObject.transform);
         explosion.SetActive(true);
         explosion.GetComponent<ParticleSystem>().Stop();
         explosion.GetComponent<ParticleSystem>().Clear();
         explosion.GetComponent<ParticleSystem>().Play();
-        this.gameObject.GetComponent<Collider>().enabled = false;
         StartCoroutine(DestroyBomb(this.gameObject, 5f));
     }
 
@@ -53,21 +53,18 @@ public class BombManager : MonoBehaviour {
     }
 
     void RaycastDirection(Vector3 direction) {
-        float rayLength = 2.0f;
-
         Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1f, transform.position.z), direction);
-        Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.red, 1f);
+        Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire*2), Color.red, 1f);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength)) {
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, gManager.numFire*2)) {
             if (hitInfo.collider.CompareTag("Block")) {
                 hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
             }
             if (hitInfo.collider.CompareTag("Player")) {
                 gManager.RespawnPlayer();
-                //gManager.SubstractLive();
-                //StartCoroutine(ReloadSceneAfterTime(2f));
             }
             if (hitInfo.collider.CompareTag("Bomb")) {
+                Debug.Log("bomba");
                 hitInfo.collider.gameObject.GetComponent<BombManager>().explodeBomb();
             }
             HandleCollision(hitInfo.collider.gameObject);
