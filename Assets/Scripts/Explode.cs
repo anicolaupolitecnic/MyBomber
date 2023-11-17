@@ -15,11 +15,11 @@ public class Explode: MonoBehaviour {
 	private Transform transf;
 
 	public void DestroyCube() {
-		gameObject.GetComponent<Collider>().enabled = false;
-		mat = gameObject.GetComponent<Renderer>().material;
+		gameObject.gameObject.GetComponent<Collider>().enabled = false;
+		mat = gameObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().material;
 		transf = gameObject.transform;
 
-		gameObject.GetComponent<Renderer>().enabled = false;
+		gameObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = false;
 		for (int x = 0; x < cubesPerAxis; x++) {
 			for (int y = 0; y< cubesPerAxis; y++) {
 				for (int z = 0; z < cubesPerAxis; z++) {

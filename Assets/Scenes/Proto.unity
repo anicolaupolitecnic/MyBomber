@@ -1794,6 +1794,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
         type: 3}
+      propertyPath: pointerDistance
+      value: 1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951441183840875744, guid: 95b59588bd026da489083d246f99caa5,
+        type: 3}
       propertyPath: mouseSensitivity
       value: 180
       objectReference: {fileID: 0}
