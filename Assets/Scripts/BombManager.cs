@@ -30,15 +30,55 @@ public class BombManager : MonoBehaviour {
         DisableAllChildrenRecursive(this.gameObject.transform);
         this.gameObject.GetComponent<Collider>().enabled = false;
         destroyBomb = true;
-        RaycastDirection(Vector3.forward);
-        RaycastDirection(Vector3.back);
-        RaycastDirection(Vector3.left);
-        RaycastDirection(Vector3.right);
-        explosion.SetActive(true);
-        explosion.GetComponent<ParticleSystem>().Stop();
-        explosion.GetComponent<ParticleSystem>().Clear();
-        explosion.GetComponent<ParticleSystem>().Play();
+        CheckCollisions(Vector3.forward);
+        CheckCollisions(Vector3.back);
+        CheckCollisions(Vector3.left);
+        CheckCollisions(Vector3.right);
+        CheckCollisions(Vector3.down);
+        PlayExplosionPS(this.gameObject.transform);
+
+        for (int i = 0; i < gManager.numFire; i++) {
+            Ray ray = new Ray();
+            RaycastHit hitInfo;
+            ray = new Ray(new Vector3(transform.position.x - (2f* gManager.numFire), transform.position.y - 1f, transform.position.z), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
+            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+                if (hitInfo.collider.CompareTag("Tile")) {
+                    PlayExplosionPS(hitInfo.collider.transform);
+                }
+            }
+            ray = new Ray(new Vector3(transform.position.x + (2f * gManager.numFire), transform.position.y - 1f, transform.position.z), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
+            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+                if (hitInfo.collider.CompareTag("Tile")) {
+                    PlayExplosionPS(hitInfo.collider.transform);
+                }
+            }
+            ray = new Ray(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z - (2f * gManager.numFire)), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
+            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+                if (hitInfo.collider.CompareTag("Tile")) {
+                    PlayExplosionPS(hitInfo.collider.transform);
+                }
+            }
+            ray = new Ray(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z + (2f * gManager.numFire)), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
+            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+                if (hitInfo.collider.CompareTag("Tile")) {
+                    PlayExplosionPS(hitInfo.collider.transform);
+                }
+            }
+        }
         StartCoroutine(DestroyBomb(this.gameObject, 5f));
+    }
+
+    void PlayExplosionPS(Transform t) {
+        GameObject xplosion = Instantiate(explosion, t.position, t.rotation);
+        xplosion.SetActive(true);
+        xplosion.GetComponent<ParticleSystem>().Stop();
+        xplosion.GetComponent<ParticleSystem>().Clear();
+        xplosion.GetComponent<ParticleSystem>().Play();
+        StartCoroutine(DestroyBomb(xplosion.gameObject, 5f));
     }
 
     void DisableAllChildrenRecursive(Transform parent) {
@@ -53,7 +93,7 @@ public class BombManager : MonoBehaviour {
         Destroy(bomb);
     }
 
-    void RaycastDirection(Vector3 direction) {
+    void CheckCollisions(Vector3 direction) {
         Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1f, transform.position.z), direction);
         Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire*2), Color.red, 1f);
 
@@ -73,7 +113,7 @@ public class BombManager : MonoBehaviour {
     }
 
     void HandleCollision(GameObject other) {
-        if (other.CompareTag("Icon")) {
+        if (other.CompareTag("IconFire") || other.CompareTag("IconBomb")) {
             Destroy(other.gameObject);
         }
     }

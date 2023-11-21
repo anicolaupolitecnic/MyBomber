@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public int numFire;
     public int numLives;
     public GameObject spwanPoint;
-    private GameObject player;
+    [SerializeField] private GameObject player;
 
     [SerializeField] private TextMeshProUGUI tInfo;
     [SerializeField] private TextMeshProUGUI tBombs;
@@ -93,11 +93,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator ReloadSceneAfterTime(float delay) {
-        Debug.Log("E1");
         yield return new WaitForSeconds(delay);
         tInfo.enabled = false;
-        player.transform.position = spwanPoint.transform.position;
+        player.transform.position = new Vector3(0, 2, 2);
         ResetPlayerStats();
-        Debug.Log("E2");
     } 
 }
