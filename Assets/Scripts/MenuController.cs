@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour {
-
-
+    private float soundVolume;
+    [SerializeField] TMP_Text textSoundVolume;
+    [SerializeField] Slider soundSlider;
     [SerializeField] private GameObject optsMenu; 
-    [SerializeField] private GameObject aboutMenu; 
+    [SerializeField] private GameObject aboutMenu;
 
-    
+    private void Start() {
+        soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
+    }
+
     public void StartGame() {
-        //SceneManager.LoadScene(4);
+        SceneManager.LoadScene(1);
         Debug.Log("Càrrega joc");
     }
     
@@ -34,5 +40,11 @@ public class MenuController : MonoBehaviour {
     public void ExitGame() {
         //Application.Quit();
         Debug.Log("EXIT GAME");
+    }
+
+    public void SetSoundVolume() {
+        soundVolume = soundSlider.value;
+        textSoundVolume.text = soundVolume.ToString();
+        Debug.Log("soundVolume: " + soundVolume);
     }
 }

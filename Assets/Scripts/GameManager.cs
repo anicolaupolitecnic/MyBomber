@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour {
     public void RespawnPlayer() {
         isPlayerAlive = false;
         SubstractLive();
+        //this.gameObject.transform.position = spwanPoint.transform.position;
         if (numLives <= 0)
             tInfo.enabled = true;
         else
