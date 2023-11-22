@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2130278948414569809}
   - component: {fileID: 8648145233188363415}
   - component: {fileID: 435319205275121633}
-  - component: {fileID: 5796685850597103483}
   - component: {fileID: 8542318244329999865}
+  - component: {fileID: 4818143692972225514}
   m_Layer: 0
   m_Name: Block2
   m_TagString: Block
@@ -70,28 +70,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.1997077, y: 1.5413201, z: 1.9721994}
   m_Center: {x: 0.14376056, y: 0.27066004, z: -0.0060009956}
---- !u!114 &5796685850597103483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8942097263572354685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14ee647f8b09aae478fa6fe090aa59e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  miniBlock: {fileID: 6586521236056505231, guid: eadacc35d435109479240bfa7c38560b,
-    type: 3}
-  cubesPerAxis: 8
-  delay: 0.1
-  force: 300
-  radius: 2
-  lifeTime: 3
 --- !u!114 &8542318244329999865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +92,48 @@ MonoBehaviour:
   force: 300
   radius: 2
   lifeTime: 3
+--- !u!23 &4818143692972225514
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8942097263572354685}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &2667617232258796568
 PrefabInstance:
   m_ObjectHideFlags: 0

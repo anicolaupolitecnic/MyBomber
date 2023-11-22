@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5801853120799256275}
   - component: {fileID: 3823685290055896853}
   - component: {fileID: 2672892967415272237}
-  - component: {fileID: 2425655351014444881}
   - component: {fileID: 6791285284250447317}
+  - component: {fileID: 1191617485643105603}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -51,7 +51,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  miniBlock: {fileID: 3534377736375899647}
+  miniBlock: {fileID: 1979675442204751754, guid: 6010ba8de2dfabd49a5d68137c88f246,
+    type: 3}
   cubesPerAxis: 8
   delay: 1
   force: 300
@@ -70,28 +71,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7489095, y: 2.0744996, z: 1.9919028}
   m_Center: {x: -0.0008599758, y: 0.13512689, z: -0.040212393}
---- !u!114 &2425655351014444881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3534377736375899647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14ee647f8b09aae478fa6fe090aa59e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  miniBlock: {fileID: 6586521236056505231, guid: eadacc35d435109479240bfa7c38560b,
-    type: 3}
-  cubesPerAxis: 8
-  delay: 0.1
-  force: 300
-  radius: 2
-  lifeTime: 3
 --- !u!114 &6791285284250447317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +93,48 @@ MonoBehaviour:
   force: 300
   radius: 2
   lifeTime: 3
+--- !u!23 &1191617485643105603
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3534377736375899647}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &1304547029946607187
 PrefabInstance:
   m_ObjectHideFlags: 0

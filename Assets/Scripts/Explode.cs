@@ -16,10 +16,10 @@ public class Explode: MonoBehaviour {
 
 	public void DestroyCube() {
 		gameObject.gameObject.GetComponent<Collider>().enabled = false;
-		mat = gameObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().material;
+		mat = miniBlock.transform.GetComponent<Renderer>().sharedMaterial;
 		transf = gameObject.transform;
 
-		gameObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = false;
+        this.gameObject.transform.GetChild(0).transform.gameObject.SetActive(false);
 		for (int x = 0; x < cubesPerAxis; x++) {
 			for (int y = 0; y< cubesPerAxis; y++) {
 				for (int z = 0; z < cubesPerAxis; z++) {

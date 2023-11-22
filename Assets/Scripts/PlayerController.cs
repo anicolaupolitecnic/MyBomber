@@ -62,7 +62,8 @@ public class PlayerController : MonoBehaviour {
                 if (hit.collider.gameObject.transform.childCount == 0) {
                     if (gManager.numBombsThrown < gManager.numBombs) {
                         gManager.IncNumBombsThrown();
-                        newBomb = Instantiate(bomb, hit.collider.gameObject.transform.position, hit.collider.gameObject.transform.rotation);
+                        Vector3 v1 = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+0.5f, hit.collider.gameObject.transform.position.z);
+                        newBomb = Instantiate(bomb, v1, hit.collider.gameObject.transform.rotation);
                         newBomb.GetComponent<Collider>().enabled = true;
                         newBomb.transform.SetParent(hit.collider.gameObject.transform);
 
