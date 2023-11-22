@@ -95,7 +95,9 @@ public class GameManager : MonoBehaviour {
     private IEnumerator ReloadSceneAfterTime(float delay) {
         yield return new WaitForSeconds(delay);
         tInfo.enabled = false;
-        player.transform.position = new Vector3(0, 2, 2);
+        player.GetComponent<CharacterController>().enabled = false;
+        player.transform.position = new Vector3(spwanPoint.transform.position.x, spwanPoint.transform.position.y, spwanPoint.transform.position.z);
+        player.GetComponent<CharacterController>().enabled = true;
         ResetPlayerStats();
     } 
 }
