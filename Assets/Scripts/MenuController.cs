@@ -4,16 +4,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MenuController : MonoBehaviour {
     private float soundVolume;
     [SerializeField] TMP_Text textSoundVolume;
     [SerializeField] Slider soundSlider;
-    [SerializeField] private GameObject optsMenu; 
-    [SerializeField] private GameObject aboutMenu;
+    [SerializeField] private GameObject optsMenu, aboutMenu;
+    [SerializeField] private GameObject btnPlay, btnSlideSound, btnCloseAboutMenu;
 
     private void Start() {
         soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(btnPlay);
     }
 
     public void StartGame() {
@@ -23,17 +26,21 @@ public class MenuController : MonoBehaviour {
     
     public void CloseMenuOptions() {
         optsMenu.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(btnPlay);
     }
 
     public void CloseMenuAbout() {
         aboutMenu.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(btnPlay);
     }
 
     public void OpenMenuOptions() {
+        EventSystem.current.SetSelectedGameObject(btnSlideSound);
         optsMenu.SetActive(true);
     }
 
     public void OpenMenuAbout() {
+        EventSystem.current.SetSelectedGameObject(btnCloseAboutMenu);
         aboutMenu.SetActive(true);
     }
 
