@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IconManager : MonoBehaviour {
     private GameManager gManager;
     [SerializeField] private float rotationSpeed;
-    
+    private AudioSource aS;
+    [SerializeField] private AudioClip pickItem;
+
     void Start() {
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        aS = this.gameObject.transform.GetComponentInParent<AudioSource>();
     }
 
     void Update() {
@@ -16,6 +20,10 @@ public class IconManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
+            aS.Stop();
+            aS.clip = pickItem;
+            aS.loop = false;
+            aS.Play();
             if (this.gameObject.transform.CompareTag("IconFire"))
                 gManager.IncNumFire();
             if (this.gameObject.transform.CompareTag("IconBomb"))

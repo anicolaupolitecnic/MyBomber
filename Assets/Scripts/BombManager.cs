@@ -10,10 +10,14 @@ public class BombManager : MonoBehaviour {
     [SerializeField] private float force;
 	[SerializeField] private float radius;
     private GameManager gManager;
+    private AudioSource aS;
+    [SerializeField] private AudioClip wick;
+    [SerializeField] private AudioClip explode;
 
     void Start() {
         initTime = Time.time;
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();   
+        aS = this.gameObject.GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -35,6 +39,11 @@ public class BombManager : MonoBehaviour {
         CheckCollisions(Vector3.left);
         CheckCollisions(Vector3.right);
         CheckCollisions(Vector3.down);
+        
+        aS.Stop();
+        aS.clip = explode;
+        aS.loop = false;
+        aS.Play();
         PlayExplosionPS(this.gameObject.transform);
 
         for (int i = 0; i < gManager.numFire; i++) {
@@ -94,7 +103,7 @@ public class BombManager : MonoBehaviour {
     }
 
     void CheckCollisions(Vector3 direction) {
-        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y, transform.position.z), direction);
+        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z), direction);
         Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire*2), Color.red, 1f);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, gManager.numFire*2)) {
