@@ -12,6 +12,7 @@ public class MenuController : MonoBehaviour {
     [SerializeField] Slider soundSlider;
     [SerializeField] private GameObject optsMenu, aboutMenu;
     [SerializeField] private GameObject btnPlay, btnSlideSound, btnCloseAboutMenu;
+    [SerializeField] private List<GameObject> ps;
 
     private void Start() {
         soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
@@ -25,21 +26,33 @@ public class MenuController : MonoBehaviour {
     }
     
     public void CloseMenuOptions() {
+        foreach (GameObject p in ps){
+            p.SetActive(true);
+        }
         optsMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(btnPlay);
     }
 
     public void CloseMenuAbout() {
+        foreach (GameObject p in ps) {
+            p.SetActive(true);
+        }
         aboutMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(btnPlay);
     }
 
     public void OpenMenuOptions() {
+        foreach (GameObject p in ps) {
+            p.SetActive(false);
+        }
         EventSystem.current.SetSelectedGameObject(btnSlideSound);
         optsMenu.SetActive(true);
     }
 
     public void OpenMenuAbout() {
+        foreach (GameObject p in ps) {
+            p.SetActive(false);
+        }
         EventSystem.current.SetSelectedGameObject(btnCloseAboutMenu);
         aboutMenu.SetActive(true);
     }
