@@ -13,6 +13,7 @@ public class MenuController : MonoBehaviour {
     [SerializeField] private GameObject optsMenu, aboutMenu;
     [SerializeField] private GameObject btnPlay, btnSlideSound, btnCloseAboutMenu;
     [SerializeField] private List<GameObject> ps;
+    [SerializeField] private ScrollRect myScrollRect;
 
     private void Start() {
         soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
@@ -54,6 +55,7 @@ public class MenuController : MonoBehaviour {
             p.SetActive(false);
         }
         EventSystem.current.SetSelectedGameObject(btnCloseAboutMenu);
+        myScrollRect.verticalNormalizedPosition = 1f;
         aboutMenu.SetActive(true);
     }
 
