@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour {
+    [SerializeField] private float speed;
     private Animator animator;
     private const int STIDLE = 1;
     private const int STWALK = 2;
@@ -13,6 +15,8 @@ public class EnemyController : MonoBehaviour {
     private int state;
     private int prevState;
 
+    private bool checkForCollisions = false;
+    private bool isChecked = false;
     private NavMeshAgent navMeshAgent;
     [SerializeField] private GameObject target;
     private Rigidbody rb;
@@ -25,20 +29,24 @@ public class EnemyController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         state = STIDLE;
         prevState = STIDLE;
-        ray = new Ray();
+        CheckFrontCollisions();
     }
 
     void Update() {
         //navMeshAgent.destination = target.transform.position;
+        
+        if (isChecked && checkForCollisions) {
+            CheckLeftCollisions();
+            CheckRightCollisions();
+            CheckFrontCollisions();
+            //CheckBackCollisions();
+            checkForCollisions = false;
+        }
 
         if (prevState != state) {
             prevState = state;
 
-
         } else {
-            CheckFrontCollisions();
-            //CheckSideCollisions();
-
             switch (state) {
                 case STIDLE:
                     if (!animator.GetBool("Idle")) {
@@ -50,7 +58,7 @@ public class EnemyController : MonoBehaviour {
                     if (!animator.GetBool("Walk")) {
                         SetAnimationTo("Walk");
                     }
-                    Vector3 initialVelocity = transform.forward * 3f;
+                    Vector3 initialVelocity = transform.forward * speed;
                     rb.velocity = initialVelocity;
                     break;
 
@@ -91,15 +99,10 @@ public class EnemyController : MonoBehaviour {
         state = STIDLE;
     }
 
-    void CheckSideCollisions() {
-        //CheckBackCollisions();
-        CheckLeftCollisions();
-        CheckRightCollisions();
-    }
-
     void CheckFrontCollisions() {
-        ray = new Ray(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Vector3.forward);
-        //Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
+        Vector3 v = transform.TransformDirection(transform.position);
+        ray = new Ray(new Vector3(v.x, v.y + 1f, v.z), transform.TransformDirection(Vector3.forward));
+        Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
             if (hit.transform.tag == "Player") {
@@ -110,7 +113,7 @@ public class EnemyController : MonoBehaviour {
             } else if (hit.transform.tag == "Wall" || hit.transform.tag == "Obstacle") {
                 Debug.Log("Front Col: "+ hit.transform.tag);
                 Vector3 currentRotation = transform.rotation.eulerAngles;
-                Vector3 newRotation = new Vector3(currentRotation.x, 90f, currentRotation.z);
+                Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y+180f, currentRotation.z);
                 transform.rotation = Quaternion.Euler(newRotation);
             } 
         }else {
@@ -121,37 +124,49 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    void CheckBackCollisions() {
-        ray = new Ray(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Vector3.back);
-        //Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
-            CheckHitCollisions(hit);
-        }
-    }
-
     void CheckLeftCollisions() {
-        ray = new Ray(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Vector3.left);
-        //Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, 2f)){
-            CheckHitCollisions(hit);
+        Vector3 v = transform.TransformDirection(transform.position);
+        ray = new Ray(new Vector3(v.x, v.y + 1f, v.z), transform.TransformDirection(Vector3.left));
+        Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
+        if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
+            Vector3 currentRotation = transform.rotation.eulerAngles;
+            Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y - 90f, currentRotation.z);
+            transform.rotation = Quaternion.Euler(newRotation);
         }
     }
 
     void CheckRightCollisions() {
-        ray = new Ray(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Vector3.right);
-        //Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, 2f)){
-            CheckHitCollisions(hit);
+        Vector3 v = transform.TransformDirection(transform.position);
+        ray = new Ray(new Vector3(v.x, v.y + 1f, v.z), transform.TransformDirection(Vector3.right));
+        Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
+        if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)){
+            Vector3 currentRotation = transform.rotation.eulerAngles;
+            Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + 90f, currentRotation.z);
+            transform.rotation = Quaternion.Euler(newRotation);
         }
     }
 
-    void CheckHitCollisions(RaycastHit hit) {
-        if (hit.transform.tag == "Player") {
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.tag.Equals("Tile")) { 
+            //checkForCollisions = true;
+            Debug.Log("TILE ON");
+        }
+    }
 
-        } else if (hit.transform.tag == "Wall") {
+    private void OnTriggerStay(Collider other) {
+        if (other.gameObject.tag.Equals("Tile")) {
+            float distance = Vector3.Distance(other.transform.position, this.transform.position);
+            if (!isChecked && (distance < 0.5f)) {
+                isChecked = checkForCollisions = true;
+                Debug.Log("COLLISIONS ON");
+            }
+        }
+    }
 
-        } else if (hit.transform.tag == "Bomb") {
-
+    private void OnTriggerExit(Collider other) {
+        if (other.gameObject.tag.Equals("Tile")) {
+            isChecked = checkForCollisions = false;
+            Debug.Log("COLLISIONS OFF");
         }
     }
 }

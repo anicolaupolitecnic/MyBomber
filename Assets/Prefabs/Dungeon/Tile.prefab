@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4327299620877324179}
   - component: {fileID: 8974969700589714696}
+  - component: {fileID: 3663050404387756241}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Tile
@@ -24,6 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355627985792931443}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +33,6 @@ Transform:
   m_Children:
   - {fileID: 8487527823791267372}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8974969700589714696
 BoxCollider:
@@ -41,16 +42,48 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355627985792931443}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 2.0271902, y: 0.35556167, z: 1.9906611}
   m_Center: {x: 0.0070176125, y: 0.17807278, z: -0.013546705}
+--- !u!136 &3663050404387756241
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355627985792931443}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.4124844
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.2062422, z: 0}
 --- !u!1001 &8233557495565515207
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4327299620877324179}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b6870d73e2ab71945ba5c03c58a00561,
@@ -119,6 +152,13 @@ PrefabInstance:
       value: Tile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b6870d73e2ab71945ba5c03c58a00561,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3029138571035080597}
   m_SourcePrefab: {fileID: 100100000, guid: b6870d73e2ab71945ba5c03c58a00561, type: 3}
 --- !u!4 &8487527823791267372 stripped
 Transform:
@@ -140,8 +180,16 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9115867539323405462}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.020000001, y: 0.019999998, z: 0.0036673702}
   m_Center: {x: 0, y: 0, z: 0.0017819699}
