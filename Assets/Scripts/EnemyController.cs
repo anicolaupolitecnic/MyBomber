@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,26 +24,21 @@ public class EnemyController : MonoBehaviour {
     private Ray ray;
     RaycastHit hit;
 
+    private float lastTimeChecked;
+    private Vector3 lastPosition;
+
     void Start() {
         //navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        state = STIDLE;
-        prevState = STIDLE;
-        CheckFrontCollisions();
+        state = prevState = STWALK;
+        lastPosition = transform.position;
+        //CheckFrontCollisions();
     }
 
     void Update() {
         //navMeshAgent.destination = target.transform.position;
         
-        if (isChecked && checkForCollisions) {
-            CheckLeftCollisions();
-            CheckRightCollisions();
-            CheckFrontCollisions();
-            //CheckBackCollisions();
-            checkForCollisions = false;
-        }
-
         if (prevState != state) {
             prevState = state;
 
@@ -55,11 +51,35 @@ public class EnemyController : MonoBehaviour {
                     break;
 
                 case STWALK:
+                    //Animation
                     if (!animator.GetBool("Walk")) {
                         SetAnimationTo("Walk");
                     }
+                    //Movement
                     Vector3 initialVelocity = transform.forward * speed;
                     rb.velocity = initialVelocity;
+
+                    //Check environment
+                    CheckFrontCollisions();
+                    if (isChecked && checkForCollisions)
+                    {
+                        CheckLeftCollisions();
+                        CheckRightCollisions();
+                        //CheckBackCollisions();
+                        checkForCollisions = false;
+                    }
+
+                    //Check erratic behaviour
+                    if ((Time.time - lastTimeChecked) > 1f) {
+                        lastTimeChecked = Time.time;
+                        if (Vector3.Distance(transform.position, lastPosition) < 0.1f) {
+                            Debug.Log("ERRATIC CORRECTION");
+                            Turn(180);
+                        }
+
+                        lastPosition = transform.position;
+                    }
+
                     break;
 
                 case STATTACK:
@@ -69,12 +89,21 @@ public class EnemyController : MonoBehaviour {
                     break;
 
                 case STDIE:
+                    if (!animator.GetBool("Die")) {
+                        SetAnimationTo("Die");
+                    }
                     break;
 
                 default:
                     break;
             }
         }
+    }
+
+    void Turn(float f) {
+        Vector3 currentRotation = transform.localRotation.eulerAngles;
+        Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + f, currentRotation.z);
+        transform.localEulerAngles = newRotation;
     }
 
     void SetAnimationTo(string s) {
@@ -90,31 +119,31 @@ public class EnemyController : MonoBehaviour {
     }
 
     void MakeAttack() { 
-        if (prevState != state && state != STATTACK) {
+        if (state != STATTACK) {
             state = STATTACK;
         } 
     }
 
     public void DoneWithAttack() {
-        state = STIDLE;
+        state = STWALK;
+        Turn(180);
     }
 
     void CheckFrontCollisions() {
         Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y+1f, this.transform.position.z);
         ray = new Ray(v, transform.InverseTransformDirection(Vector3.forward));
-        Debug.DrawRay(ray.origin, ray.direction * 1, Color.blue, 1f);
+        Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1.5f);
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit, 1f)) {
             if (hit.transform.tag == "Player") {
-                MakeAttack();
                 Debug.Log("Front Col: player");
+                MakeAttack();
             } else if (hit.transform.tag == "Bomb") {
                 Debug.Log("Front Col: bomb");
+                Turn(180);
             } else if (hit.transform.tag == "Wall" || hit.transform.tag == "Obstacle") {
                 Debug.Log("Front Col: "+ hit.transform.tag);
-                Vector3 currentRotation = transform.localRotation.eulerAngles;
-                Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + 180f, currentRotation.z);
-                transform.localEulerAngles = newRotation;
+                Turn(180);
             } 
         }else {
             Debug.Log("Front Col: NONE");
@@ -131,9 +160,7 @@ public class EnemyController : MonoBehaviour {
 
         if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
             Debug.Log("LEFT");
-            Vector3 currentRotation = transform.localRotation.eulerAngles;
-            Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y - 90f, currentRotation.z);
-            transform.localEulerAngles = newRotation;
+            Turn(-90);
         }
     }
 
@@ -144,9 +171,7 @@ public class EnemyController : MonoBehaviour {
 
         if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)){
             Debug.Log("RIGHT");
-            Vector3 currentRotation = transform.localRotation.eulerAngles;
-            Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + 90f, currentRotation.z);
-            transform.localEulerAngles = newRotation;
+            Turn(90);
         }
     }
 
@@ -169,5 +194,14 @@ public class EnemyController : MonoBehaviour {
         if (other.gameObject.tag.Equals("Tile")) {
             isChecked = checkForCollisions = false;
         }
+    }
+
+    private void DestroyEnemy() {
+        Destroy(this.gameObject);
+    }
+
+    public void PlayDead() {
+        state = STDIE;
+        Invoke("DestroyEnemy", 5f);
     }
 }

@@ -117,6 +117,10 @@ public class BombManager : MonoBehaviour {
                 Debug.Log("bomba");
                 hitInfo.collider.gameObject.GetComponent<BombManager>().explodeBomb();
             }
+            if (hitInfo.collider.CompareTag("Enemy")) {
+                Debug.Log("Enemy");
+                hitInfo.transform.gameObject.GetComponent<EnemyController>().PlayDead();
+            }
             HandleCollision(hitInfo.collider.gameObject);
         }
     }
