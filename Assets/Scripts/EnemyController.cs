@@ -100,11 +100,11 @@ public class EnemyController : MonoBehaviour {
     }
 
     void CheckFrontCollisions() {
-        Vector3 v = transform.TransformDirection(transform.position);
-        ray = new Ray(new Vector3(v.x, v.y + 1f, v.z), transform.TransformDirection(Vector3.forward));
-        Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
+        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y+1f, this.transform.position.z);
+        ray = new Ray(v, transform.InverseTransformDirection(Vector3.forward));
+        Debug.DrawRay(ray.origin, ray.direction * 1, Color.blue, 1f);
 
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, 1f)) {
             if (hit.transform.tag == "Player") {
                 MakeAttack();
                 Debug.Log("Front Col: player");
@@ -112,9 +112,9 @@ public class EnemyController : MonoBehaviour {
                 Debug.Log("Front Col: bomb");
             } else if (hit.transform.tag == "Wall" || hit.transform.tag == "Obstacle") {
                 Debug.Log("Front Col: "+ hit.transform.tag);
-                Vector3 currentRotation = transform.rotation.eulerAngles;
-                Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y+180f, currentRotation.z);
-                transform.rotation = Quaternion.Euler(newRotation);
+                Vector3 currentRotation = transform.localRotation.eulerAngles;
+                Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + 180f, currentRotation.z);
+                transform.localEulerAngles = newRotation;
             } 
         }else {
             Debug.Log("Front Col: NONE");
@@ -125,31 +125,34 @@ public class EnemyController : MonoBehaviour {
     }
 
     void CheckLeftCollisions() {
-        Vector3 v = transform.TransformDirection(transform.position);
-        ray = new Ray(new Vector3(v.x, v.y + 1f, v.z), transform.TransformDirection(Vector3.left));
+        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y + 1f, this.transform.position.z);
+        ray = new Ray(v, transform.InverseTransformDirection(Vector3.left));
         Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
+
         if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
-            Vector3 currentRotation = transform.rotation.eulerAngles;
+            Debug.Log("LEFT");
+            Vector3 currentRotation = transform.localRotation.eulerAngles;
             Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y - 90f, currentRotation.z);
-            transform.rotation = Quaternion.Euler(newRotation);
+            transform.localEulerAngles = newRotation;
         }
     }
 
     void CheckRightCollisions() {
-        Vector3 v = transform.TransformDirection(transform.position);
-        ray = new Ray(new Vector3(v.x, v.y + 1f, v.z), transform.TransformDirection(Vector3.right));
+        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y + 1f, this.transform.position.z);
+        ray = new Ray(v, transform.InverseTransformDirection(Vector3.right));
         Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
+
         if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)){
-            Vector3 currentRotation = transform.rotation.eulerAngles;
+            Debug.Log("RIGHT");
+            Vector3 currentRotation = transform.localRotation.eulerAngles;
             Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + 90f, currentRotation.z);
-            transform.rotation = Quaternion.Euler(newRotation);
+            transform.localEulerAngles = newRotation;
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag.Equals("Tile")) { 
             //checkForCollisions = true;
-            Debug.Log("TILE ON");
         }
     }
 
@@ -158,7 +161,6 @@ public class EnemyController : MonoBehaviour {
             float distance = Vector3.Distance(other.transform.position, this.transform.position);
             if (!isChecked && (distance < 0.5f)) {
                 isChecked = checkForCollisions = true;
-                Debug.Log("COLLISIONS ON");
             }
         }
     }
@@ -166,7 +168,6 @@ public class EnemyController : MonoBehaviour {
     private void OnTriggerExit(Collider other) {
         if (other.gameObject.tag.Equals("Tile")) {
             isChecked = checkForCollisions = false;
-            Debug.Log("COLLISIONS OFF");
         }
     }
 }
