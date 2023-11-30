@@ -101,18 +101,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4951441183840875749}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d1f023edd1458044a1292b9cfe21d0b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7df454c749b5e634983203320f7f1448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pointer: {fileID: 6230236473982163434, guid: 49c89284ccda68b4d840508c935ab90f, type: 3}
   pointerDistance: 0
-  bomb: {fileID: 3169547791655665870, guid: 15479f224da1d9947a1d778a321e9f6f, type: 3}
+  bomb: {fileID: 0}
   cam: {fileID: 4951441183893518751}
-  speed: 12
+  speed: 8
   gravity: -19.62
-  mouseSensitivity: 180
-  topClamp: -5
-  bottomClamp: 20
+  mouseSensitivity: 20
+  topClamp: 5
+  bottomClamp: -20
 --- !u!143 &4951441183840875747
 CharacterController:
   m_ObjectHideFlags: 0

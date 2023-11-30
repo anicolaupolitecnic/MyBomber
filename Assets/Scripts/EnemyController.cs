@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour {
         lastPosition = transform.position;
         smokePS.Stop();
         int randomIndex = Random.Range(0, spawnPoints.Count);
-        this.transform.position = spawnPoints[randomIndex].transform.position;
+        this.transform.parent.transform.position = spawnPoints[randomIndex].transform.position;
     }
 
     void Update() {
@@ -120,12 +120,12 @@ public class EnemyController : MonoBehaviour {
 
     void Turn(float f) {
         Vector3 currentRotation = transform.localRotation.eulerAngles;
-        float speedRot = 30;//90;
+        float speedRot = 90;//90;
         actualEnemyRotationY += speedRot * Time.deltaTime;
 
         Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + speedRot * Time.deltaTime, currentRotation.z);
         transform.localEulerAngles = newRotation;
-        Debug.Log(Mathf.Abs(currentRotation.y - initialEnemyRotationY));
+        Debug.Log(Mathf.Abs(initialEnemyRotationY));
 
         if (Mathf.Abs(currentRotation.y-initialEnemyRotationY) > f) {
             Debug.Log(this.transform.gameObject.name + " DONE ROT");
@@ -160,9 +160,9 @@ public class EnemyController : MonoBehaviour {
     }
 
     void CheckFrontCollisions() {
-        Vector3 v = new Vector3(this.transform.parent.transform.position.x, this.transform.parent.transform.position.y+1f, this.transform.parent.transform.position.z);
-        ray = new Ray(v, transform.InverseTransformDirection(Vector3.forward));
-        Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1.5f);
+        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y + 1f, this.transform.position.z);
+        ray = new Ray(v, transform.TransformDirection(Vector3.forward));
+        Debug.DrawRay(ray.origin, ray.direction * 2, Color.blue, 1f);
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit, 1f)) {
             if (hit.transform.tag == "Player") {
@@ -172,7 +172,7 @@ public class EnemyController : MonoBehaviour {
                 Debug.Log("Front Col: bomb");
                 turnDegress = 180;
                 state = STTURN;
-            } else if (hit.transform.tag == "Wall" || hit.transform.tag == "Obstacle" || hit.transform.tag == "Enemy") {
+            } else if (hit.transform.tag == "Wall" || hit.transform.tag == "Block" || hit.transform.tag == "Enemy") {
                 Debug.Log("Front Col: "+ hit.transform.tag);
                 turnDegress = 180;
                 state = STTURN;

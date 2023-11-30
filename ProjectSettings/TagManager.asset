@@ -22,10 +22,10 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
+  - Floor
   - Player
   - Obstacle
-  - 
+  - Wall
   - 
   - 
   - 
