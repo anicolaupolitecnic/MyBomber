@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class BombManager : MonoBehaviour {
@@ -10,13 +11,15 @@ public class BombManager : MonoBehaviour {
     [SerializeField] private float force;
 	[SerializeField] private float radius;
     private GameManager gManager;
+    private NavMeshSurface surface;
     private AudioSource aS;
     [SerializeField] private AudioClip wick;
     [SerializeField] private AudioClip explode;
 
     void Start() {
         initTime = Time.time;
-        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();   
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        surface = GameObject.FindGameObjectWithTag("Surface").GetComponent<NavMeshSurface>();
         aS = this.gameObject.GetComponent<AudioSource>();
     }
 
@@ -99,6 +102,7 @@ public class BombManager : MonoBehaviour {
 
     IEnumerator DestroyBomb(GameObject bomb, float time) {
         yield return new WaitForSeconds(time);
+        surface.BuildNavMesh();
         Destroy(bomb);
     }
 

@@ -15,6 +15,7 @@ TagManager:
   - IconFire
   - IconBomb
   - Enemy
+  - Surface
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - Player
   - Obstacle
   - Wall
-  - 
+  - Surface
   - 
   - 
   - 

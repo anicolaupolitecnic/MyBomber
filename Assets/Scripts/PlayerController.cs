@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 v = pointer.gameObject.transform.position;
         v = new Vector3(v.x,v.y+8f, v.z);
         Ray ray = new Ray(v, Vector3.down);
-        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.blue, 1f);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit)) {

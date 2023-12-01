@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Diagnostics.Tracing;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Explode: MonoBehaviour {
 	public LayerMask playerLayer;
@@ -34,8 +36,8 @@ public class Explode: MonoBehaviour {
         yield return new WaitForSeconds(delay);
         Destroy(cube);
     }
-	
-	void CreateCube (Vector3 coordinates) {
+
+    void CreateCube (Vector3 coordinates) {
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.GetComponent<Collider>().enabled = false;
 		Renderer rd = cube.GetComponent<Renderer>();

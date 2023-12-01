@@ -7,50 +7,47 @@ using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour {
-    [SerializeField] private float speed;
+    [SerializeField] private float rangeOfView;
     [SerializeField] private ParticleSystem smokePS;
     [SerializeField] private GameObject skeleton;
+    [SerializeField] private GameObject player;
     [SerializeField] private List<GameObject> spawnPoints;
+
     private Animator animator;
     private const int STIDLE = 1;
     private const int STWALK = 2;
-    private const int STTURN = 3;
-    private const int STATTACK = 4;
-    private const int STDIE = 5;
+    private const int STATTACK = 3;
+    private const int STDIE = 4;
     private int state;
     private int prevState;
+    private bool chasingPlayer = false;
 
-    private bool checkForCollisions = false;
     private bool isChecked = false;
     private NavMeshAgent navMeshAgent;
     [SerializeField] private GameObject target;
     private Rigidbody rb;
-    private Ray ray;
-    RaycastHit hit;
 
-    private float lastTimeChecked;
-    private Vector3 lastPosition;
-    private float initialEnemyRotationY;
-    private float actualEnemyRotationY;
-    private float turnDegress;
+    int randomIndex;
 
     void Start() {
-        //navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        state = prevState = STWALK;
-        lastPosition = transform.position;
+        
+        state = prevState = STWALK;        
         smokePS.Stop();
-        int randomIndex = Random.Range(0, spawnPoints.Count);
-        this.transform.parent.transform.position = spawnPoints[randomIndex].transform.position;
+        randomIndex = Random.Range(0, spawnPoints.Count);
+
+        navMeshAgent.enabled = false;
+        transform.parent.transform.position = spawnPoints[randomIndex].transform.position;
+        navMeshAgent.enabled = true;
+        getDestinationPath();
     }
 
-    void Update() {
-        //navMeshAgent.destination = target.transform.position;
-        
+    void Update() {        
         if (prevState != state) {
             prevState = state;
-            lastTimeChecked = Time.time;
+            //lastTimeChecked = Time.time;
 
         } else {
             switch (state) {
@@ -66,36 +63,14 @@ public class EnemyController : MonoBehaviour {
                     if (!animator.GetBool("Walk")) {
                         SetAnimationTo("Walk");
                     }
-                    //Movement
-                    Vector3 initialVelocity = transform.forward * speed;
-                    rb.velocity = initialVelocity;
-
-                    //Check environment
-                    CheckFrontCollisions();
-                    if (isChecked && checkForCollisions) {
-                        CheckLeftCollisions();
-                        CheckRightCollisions();
-                        //CheckBackCollisions();
-                        checkForCollisions = false;
-                    }
-
-                    //Check erratic behaviour
-                    if ((Time.time - lastTimeChecked) > 3f) {
-                        lastTimeChecked = Time.time;
-                        if (Vector3.Distance(transform.position, lastPosition) < 0.1f) {
-                            Debug.Log(this.transform.gameObject.name + "ERRATIC CORRECTION");
-                            initialEnemyRotationY = transform.localRotation.y;
-                            turnDegress = 90;
-                            state = STTURN;
+                    CheckChasingPlayer();
+                    if (!chasingPlayer)
+                        if (Vector3.Distance(this.transform.position, spawnPoints[randomIndex].transform.position) < 1f) {
+                            getDestinationPath();
+                            navMeshAgent.destination = spawnPoints[randomIndex].transform.position;
+                        } else {
+                            navMeshAgent.destination = player.transform.position;
                         }
-                        lastPosition = transform.position;
-                    }
-                    break;
-                
-                case STTURN:
-                    //Debug.Log("volta");
-                    rb.velocity = Vector3.zero;
-                    Turn(turnDegress);
                     break;
 
                 case STATTACK:
@@ -118,22 +93,37 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    void Turn(float f) {
-        Vector3 currentRotation = transform.localRotation.eulerAngles;
-        float speedRot = 90;//90;
-        actualEnemyRotationY += speedRot * Time.deltaTime;
+    void getDestinationPath() {
+        if (spawnPoints.Count > 1) {
+            int i = Random.Range(0, spawnPoints.Count);
 
-        Vector3 newRotation = new Vector3(currentRotation.x, currentRotation.y + speedRot * Time.deltaTime, currentRotation.z);
-        transform.localEulerAngles = newRotation;
-        Debug.Log(Mathf.Abs(initialEnemyRotationY));
-
-        if (Mathf.Abs(currentRotation.y-initialEnemyRotationY) > f) {
-            Debug.Log(this.transform.gameObject.name + " DONE ROT");
-            transform.localEulerAngles = new Vector3(newRotation.x, initialEnemyRotationY + f, newRotation.z);
-            turnDegress = 0;
-            state = STWALK;
+            NavMeshPath navMeshPath = new NavMeshPath();
+            if (navMeshAgent.CalculatePath(spawnPoints[i].transform.position, navMeshPath) && 
+                navMeshPath.status == NavMeshPathStatus.PathComplete &&
+                randomIndex != i) {
+                navMeshAgent.SetPath(navMeshPath);
+                randomIndex = i;
+            } else {
+                getDestinationPath();
+            }
         }
-        
+    }
+
+    void CheckChasingPlayer() {
+        NavMeshPath navMeshPath = new NavMeshPath();
+        float distanceToTarget = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distanceToTarget < rangeOfView) {
+            Debug.Log("In range");
+            if (navMeshAgent.CalculatePath(player.transform.position, navMeshPath) &&           
+                navMeshPath.status == NavMeshPathStatus.PathComplete) {
+                Debug.Log("Chasing!");
+                navMeshAgent.SetPath(navMeshPath);
+                chasingPlayer = true;
+            }
+        } else {
+            chasingPlayer = false;
+        }
     }
 
     void SetAnimationTo(string s) {
@@ -152,82 +142,6 @@ public class EnemyController : MonoBehaviour {
         if (state != STATTACK) {
             state = STATTACK;
         } 
-    }
-
-    public void DoneWithAttack() {
-        turnDegress = 180;
-        state = STTURN;
-    }
-
-    void CheckFrontCollisions() {
-        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y + 1f, this.transform.position.z);
-        ray = new Ray(v, transform.TransformDirection(Vector3.forward));
-        Debug.DrawRay(ray.origin, ray.direction * 2, Color.blue, 1f);
-
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, 1f)) {
-            if (hit.transform.tag == "Player") {
-                Debug.Log("Front Col: player");
-                MakeAttack();
-            } else if (hit.transform.tag == "Bomb") {
-                Debug.Log("Front Col: bomb");
-                turnDegress = 180;
-                state = STTURN;
-            } else if (hit.transform.tag == "Wall" || hit.transform.tag == "Block" || hit.transform.tag == "Enemy") {
-                Debug.Log("Front Col: "+ hit.transform.tag);
-                turnDegress = 180;
-                state = STTURN;
-            } 
-        }else {
-            Debug.Log("Front Col: NONE");
-            if (state != STWALK) { 
-                state = STWALK; 
-            }
-        }
-    }
-
-    void CheckLeftCollisions() {
-        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y + 1f, this.transform.position.z);
-        ray = new Ray(v, transform.InverseTransformDirection(Vector3.left));
-        Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
-
-        if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)) {
-            Debug.Log(this.transform.gameObject.name + " LEFT");
-            turnDegress = -90;
-            state = STTURN;
-        }
-    }
-
-    void CheckRightCollisions() {
-        Vector3 v = new Vector3(this.transform.position.x, this.transform.position.y + 1f, this.transform.position.z);
-        ray = new Ray(v, transform.InverseTransformDirection(Vector3.right));
-        Debug.DrawRay(ray.origin, ray.direction * 2, Color.red, 1f);
-
-        if (!Physics.Raycast(ray.origin, ray.direction, out hit, 2f)){
-            Debug.Log(this.transform.gameObject.name + " RIGHT");
-            turnDegress = 90;
-            state = STTURN;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag.Equals("Tile")) { 
-            //checkForCollisions = true;
-        }
-    }
-
-    private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag.Equals("Tile")) {
-            float distance = Vector3.Distance(other.transform.position, this.transform.position);
-            if (!isChecked && (distance < 0.5f)) {
-                isChecked = checkForCollisions = true;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other) {
-        if (other.gameObject.tag.Equals("Tile")) {
-            isChecked = checkForCollisions = false;
-        }
     }
 
     private void DestroyEnemy() {

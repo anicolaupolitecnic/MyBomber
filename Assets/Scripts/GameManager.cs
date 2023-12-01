@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.AI.Navigation;
 
 
 public class GameManager : MonoBehaviour {
@@ -13,7 +14,6 @@ public class GameManager : MonoBehaviour {
     public int numLives;
     public GameObject spwanPoint;
     [SerializeField] private GameObject player;
-
     [SerializeField] private TextMeshProUGUI tInfo;
     [SerializeField] private TextMeshProUGUI tBombs;
     [SerializeField] private TextMeshProUGUI tBombsThrown;
@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviour {
     public void RespawnPlayer() {
         isPlayerAlive = false;
         SubstractLive();
-        //this.gameObject.transform.position = spwanPoint.transform.position;
         if (numLives <= 0)
             tInfo.enabled = true;
         else
