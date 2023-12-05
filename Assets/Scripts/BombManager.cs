@@ -123,6 +123,7 @@ public class BombManager : MonoBehaviour {
             }
             if (hitInfo.collider.CompareTag("Enemy")) {
                 Debug.Log("Enemy");
+                gManager.IncNumDeadEnemies();
                 hitInfo.transform.gameObject.GetComponent<EnemyController>().PlayDead();
             }
             HandleCollision(hitInfo.collider.gameObject);
@@ -130,7 +131,7 @@ public class BombManager : MonoBehaviour {
     }
 
     void HandleCollision(GameObject other) {
-        if (other.CompareTag("IconFire") || other.CompareTag("IconBomb")) {
+        if (other.CompareTag("IconFire") || other.CompareTag("IconBomb") || other.CompareTag("IconKey")) {
             Destroy(other.gameObject);
         }
     }

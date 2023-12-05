@@ -35,7 +35,9 @@ public class PlayerController : MonoBehaviour {
     void Awake() {
         controls = new PlayerControls();
         controls.Gameplay.Action.performed += ctx => Action();
-       
+
+        controls.Gameplay.Pause.performed += ctx => Pause();
+
         controls.Gameplay.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Gameplay.Move.canceled += ctx => move = Vector2.zero;
 
@@ -72,6 +74,10 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
+    }
+
+    void Pause() { 
+        gManager.PauseMenu();
     }
 
     bool HandleCollision(GameObject other) {

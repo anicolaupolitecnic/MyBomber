@@ -5,13 +5,15 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.AI.Navigation;
 
-
 public class GameManager : MonoBehaviour {
+    [SerializeField] private GameObject pauseMenu;
     public bool isPlayerAlive;
+    public bool isIconKey;
     public int numBombs;
     public int numBombsThrown;
     public int numFire;
     public int numLives;
+    public int numDeadEnemies;
     public GameObject spwanPoint;
     [SerializeField] private GameObject player;
     [SerializeField] private TextMeshProUGUI tInfo;
@@ -19,8 +21,16 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI tBombsThrown;
     [SerializeField] private TextMeshProUGUI tFire;
     [SerializeField] private TextMeshProUGUI tLives;
+    [SerializeField] private TextMeshProUGUI tDeadEnemies;
+    [SerializeField] private GameObject iconKeyOn;
+    [SerializeField] private GameObject closedDoor;
+    [SerializeField] private GameObject openDoor;
+    private AudioSource aS;
+    [SerializeField] private AudioClip gameOver;
+    [SerializeField] private AudioClip gameClear;
 
     void Awake() {
+        aS = this.gameObject.transform.GetComponentInParent<AudioSource>();
         ResetPlayerStats();
         numLives = 3;
     }
@@ -60,10 +70,21 @@ public class GameManager : MonoBehaviour {
         UpdateHUD();
     }
 
+    public void IncNumDeadEnemies() {
+        numDeadEnemies += 1;
+        UpdateHUD();
+    }
+
     public void ResetStats() {
         numBombs = 1;
         numFire = 1;    
         numLives = 3;
+    }
+
+    public void EnableDoor() {
+        isIconKey = true;
+        closedDoor.SetActive(false);
+        openDoor.SetActive(true);
     }
 
     void UpdateHUD() {
@@ -71,6 +92,7 @@ public class GameManager : MonoBehaviour {
         tBombsThrown.text = ""+numBombsThrown;
         tFire.text = ""+numFire;
         tLives.text = ""+numLives;
+        tDeadEnemies.text = "" + numDeadEnemies;
     }
 
     void ResetPlayerStats() {
@@ -79,14 +101,16 @@ public class GameManager : MonoBehaviour {
         numBombsThrown = 0;
         numFire = 1;    
         //numLives = 3;
-        tInfo.enabled = false; 
+        tInfo.enabled = isIconKey = false; 
     }
 
     public void RespawnPlayer() {
         isPlayerAlive = false;
         SubstractLive();
-        if (numLives <= 0)
-            tInfo.enabled = true;
+        if (numLives <= 0) {
+            tInfo.text = "HAS MORT!";
+            GameOver();
+        }
         else
             StartCoroutine(ReloadSceneAfterTime(2f));
     }
@@ -98,5 +122,40 @@ public class GameManager : MonoBehaviour {
         player.transform.position = new Vector3(spwanPoint.transform.position.x, spwanPoint.transform.position.y, spwanPoint.transform.position.z);
         player.GetComponent<CharacterController>().enabled = true;
         ResetPlayerStats();
-    } 
+    }
+
+    public void LevelClear() {
+        tInfo.text = "HAS GUANYAT!";
+        StartCoroutine(LoadSceneAfterTime(3f, gameClear));
+    }
+
+    public void GameOver() {
+        StartCoroutine(LoadSceneAfterTime(3f, gameOver));
+    }
+
+    private IEnumerator LoadSceneAfterTime(float delay, AudioClip aC) {
+        aS.Stop();
+        aS.clip = aC;
+        aS.loop = false;
+        aS.Play();
+        tInfo.enabled = true;
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void PauseMenu() {
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+    }
+
+    public void PauseMenuContinue() {
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+    }
+
+    public void PauseMenuExit() {
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+        SceneManager.LoadScene("MainMenu");
+    }
 }

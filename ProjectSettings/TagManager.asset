@@ -16,6 +16,7 @@ TagManager:
   - IconBomb
   - Enemy
   - Surface
+  - IconKey
   layers:
   - Default
   - TransparentFX

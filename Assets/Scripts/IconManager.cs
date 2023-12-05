@@ -28,6 +28,8 @@ public class IconManager : MonoBehaviour {
                 gManager.IncNumFire();
             if (this.gameObject.transform.CompareTag("IconBomb"))
                 gManager.IncNumBombs();
+            if (this.gameObject.transform.CompareTag("IconKey"))
+                gManager.EnableDoor();
             Destroy(this.gameObject);
         }
     }
