@@ -63,14 +63,14 @@ public class EnemyController : MonoBehaviour {
                     if (!animator.GetBool("Walk")) {
                         SetAnimationTo("Walk");
                     }
-                    CheckChasingPlayer();
-                    if (!chasingPlayer)
+                    //CheckChasingPlayer();
+                    //if (!chasingPlayer)
                         if (Vector3.Distance(this.transform.position, spawnPoints[randomIndex].transform.position) < 1f) {
                             getDestinationPath();
                             navMeshAgent.destination = spawnPoints[randomIndex].transform.position;
-                        } else {
-                            navMeshAgent.destination = player.transform.position;
-                        }
+                        }// else {
+                            //navMeshAgent.destination = player.transform.position;
+                        //}
                     break;
 
                 case STATTACK:
