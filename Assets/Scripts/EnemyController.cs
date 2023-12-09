@@ -4,10 +4,17 @@ using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.XR;
 using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour {
+    private GameManager gManager;
+    private AudioSource aS;
+    [SerializeField] private AudioClip woosh;
+    [SerializeField] private AudioClip die;
     [SerializeField] private float rangeOfView;
+    [SerializeField] private float attackRsange;
     [SerializeField] private ParticleSystem smokePS;
     [SerializeField] private GameObject skeleton;
     [SerializeField] private GameObject player;
@@ -20,7 +27,7 @@ public class EnemyController : MonoBehaviour {
     private const int STDIE = 4;
     private int state;
     private int prevState;
-    private bool chasingPlayer = false;
+    private bool isChasingPlayer = false;
 
     private bool isChecked = false;
     private NavMeshAgent navMeshAgent;
@@ -33,7 +40,9 @@ public class EnemyController : MonoBehaviour {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        
+        aS = GetComponent<AudioSource>();
+        gManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         state = prevState = STWALK;        
         smokePS.Stop();
         randomIndex = Random.Range(0, spawnPoints.Count);
@@ -47,6 +56,7 @@ public class EnemyController : MonoBehaviour {
     void Update() {        
         if (prevState != state) {
             prevState = state;
+            DisableAllAnimations();
             //lastTimeChecked = Time.time;
 
         } else {
@@ -63,14 +73,15 @@ public class EnemyController : MonoBehaviour {
                     if (!animator.GetBool("Walk")) {
                         SetAnimationTo("Walk");
                     }
-                    //CheckChasingPlayer();
-                    //if (!chasingPlayer)
-                        if (Vector3.Distance(this.transform.position, spawnPoints[randomIndex].transform.position) < 1f) {
-                            getDestinationPath();
-                            navMeshAgent.destination = spawnPoints[randomIndex].transform.position;
-                        }// else {
-                            //navMeshAgent.destination = player.transform.position;
-                        //}
+                    
+                    Vector3 newPosition = this.transform.position + transform.forward * 0.75f * Time.deltaTime;
+                    rb.MovePosition(newPosition);
+
+                    ChasePlayer();
+                    if (Vector3.Distance(this.transform.position, spawnPoints[randomIndex].transform.position) < 1f) {
+                        getDestinationPath();
+                        navMeshAgent.destination = spawnPoints[randomIndex].transform.position;
+                    }
                     break;
 
                 case STATTACK:
@@ -109,20 +120,22 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    void CheckChasingPlayer() {
-        NavMeshPath navMeshPath = new NavMeshPath();
+
+    void ChasePlayer() {
         float distanceToTarget = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distanceToTarget < rangeOfView) {
-            Debug.Log("In range");
-            if (navMeshAgent.CalculatePath(player.transform.position, navMeshPath) &&           
-                navMeshPath.status == NavMeshPathStatus.PathComplete) {
-                Debug.Log("Chasing!");
-                navMeshAgent.SetPath(navMeshPath);
-                chasingPlayer = true;
+        if (distanceToTarget < attackRsange) {
+            if (!isChasingPlayer) { 
+                navMeshAgent.destination = player.transform.position;
+                isChasingPlayer = true;
+            }
+            if (distanceToTarget < (attackRsange/2)+ (attackRsange/4)) {
+                MakeAttack();
+                //isChasingPlayer = false;
+                Debug.Log("attack");
             }
         } else {
-            chasingPlayer = false;
+            isChasingPlayer = false;
         }
     }
 
@@ -138,10 +151,30 @@ public class EnemyController : MonoBehaviour {
         animator.SetBool("Attack", false);
     }
 
-    void MakeAttack() { 
+    void MakeAttack() {
         if (state != STATTACK) {
             state = STATTACK;
-        } 
+        }
+    }
+    public void DoneWithAttack() {
+        //Debug.Log("done with attack");
+        if (state != STWALK) {
+            state = STWALK;
+        }
+    }
+
+    public void SoundWoosh() {
+        aS.Stop();
+        aS.clip = woosh;
+        aS.loop = false;
+        aS.Play();
+    }
+
+    public void CheckPlayerHit() {
+        if (isChasingPlayer) {
+            Debug.Log("Player dead");
+            gManager.RespawnPlayer();
+        }
     }
 
     private void DestroyEnemy() {
@@ -152,6 +185,11 @@ public class EnemyController : MonoBehaviour {
         state = STDIE;
         skeleton.SetActive(false);
         smokePS.Play();
+        this.GetComponent<BoxCollider>().enabled = false;
+        aS.Stop();
+        aS.clip = die;
+        aS.loop = false;
+        aS.Play();
         Invoke("DestroyEnemy", 5f);
     }
 }

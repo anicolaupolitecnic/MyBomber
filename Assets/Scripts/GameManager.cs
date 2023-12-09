@@ -25,12 +25,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameObject iconKeyOn;
     [SerializeField] private GameObject closedDoor;
     [SerializeField] private GameObject openDoor;
-    private AudioSource aS;
+    [SerializeField] private AudioSource aS;
     [SerializeField] private AudioClip gameOver;
     [SerializeField] private AudioClip gameClear;
 
     void Awake() {
-        aS = this.gameObject.transform.GetComponentInParent<AudioSource>();
+        //aS = this.gameObject.transform.GetComponentInParent<AudioSource>();
         ResetPlayerStats();
         numLives = 3;
     }

@@ -125,6 +125,7 @@ public class BombManager : MonoBehaviour {
                 Debug.Log("Enemy");
                 gManager.IncNumDeadEnemies();
                 hitInfo.transform.gameObject.GetComponent<EnemyController>().PlayDead();
+
             }
             HandleCollision(hitInfo.collider.gameObject);
         }
