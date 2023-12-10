@@ -142,11 +142,13 @@ public class GameManager : MonoBehaviour {
 
     public void PauseMenu() {
         Time.timeScale = 0;
+        isPlayerAlive = false;
         pauseMenu.SetActive(true);
     }
 
     public void PauseMenuContinue() {
         Time.timeScale = 1;
+        isPlayerAlive = true;
         pauseMenu.SetActive(false);
     }
 

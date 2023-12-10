@@ -30,6 +30,9 @@ public class BombManager : MonoBehaviour {
                 explodeBomb();
             }
         }
+
+        if (!gManager.isPlayerAlive)
+            Destroy(this.gameObject);
     }
 
     void explodeBomb() {
@@ -52,30 +55,30 @@ public class BombManager : MonoBehaviour {
         for (int i = 0; i < gManager.numFire; i++) {
             Ray ray = new Ray();
             RaycastHit hitInfo;
-            ray = new Ray(new Vector3(transform.position.x - (2f* gManager.numFire), transform.position.y - 1f, transform.position.z), Vector3.up);
-            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
-            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+            ray = new Ray(new Vector3(transform.position.x - (1.5f), transform.position.y - 1f, transform.position.z), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (1.5f), Color.green, 1f);
+            if (Physics.Raycast(ray, out hitInfo, 1.5f)) {
                 if (hitInfo.collider.CompareTag("Tile")) {
                     PlayExplosionPS(hitInfo.collider.transform);
                 }
             }
-            ray = new Ray(new Vector3(transform.position.x + (2f * gManager.numFire), transform.position.y - 1f, transform.position.z), Vector3.up);
-            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
-            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+            ray = new Ray(new Vector3(transform.position.x + (1.5f), transform.position.y - 1f, transform.position.z), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (1.5f), Color.green, 1f);
+            if (Physics.Raycast(ray, out hitInfo, 1.5f)) {
                 if (hitInfo.collider.CompareTag("Tile")) {
                     PlayExplosionPS(hitInfo.collider.transform);
                 }
             }
-            ray = new Ray(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z - (2f * gManager.numFire)), Vector3.up);
-            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
-            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+            ray = new Ray(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z - (1.5f)), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (1.5f), Color.green, 1f);
+            if (Physics.Raycast(ray, out hitInfo, 1.5f)) {
                 if (hitInfo.collider.CompareTag("Tile")) {
                     PlayExplosionPS(hitInfo.collider.transform);
                 }
             }
-            ray = new Ray(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z + (2f * gManager.numFire)), Vector3.up);
-            Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire * 2), Color.red, 1f);
-            if (Physics.Raycast(ray, out hitInfo, gManager.numFire * 2)) {
+            ray = new Ray(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z + (1.5f)), Vector3.up);
+            Debug.DrawRay(ray.origin, ray.direction * (1.5f), Color.green, 1f);
+            if (Physics.Raycast(ray, out hitInfo, 1.5f)) {
                 if (hitInfo.collider.CompareTag("Tile")) {
                     PlayExplosionPS(hitInfo.collider.transform);
                 }

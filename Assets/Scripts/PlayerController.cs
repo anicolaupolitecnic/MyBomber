@@ -35,9 +35,12 @@ public class PlayerController : MonoBehaviour {
 
     private Image panelPlayerDie;
 
+    private AudioSource aS;
+    [SerializeField] private AudioClip playerStep;
 
     void Awake() {
         panelPlayerDie = GameObject.FindGameObjectWithTag("PanelPlayerDie").GetComponent<Image>();
+        aS= GetComponent<AudioSource>();
 
         controls = new PlayerControls();
         controls.Gameplay.Action.performed += ctx => Action();
@@ -101,6 +104,7 @@ public class PlayerController : MonoBehaviour {
         controls.Gameplay.Disable();
     }
 
+    Vector3 v = new Vector3 (0, 0, 0);
     void Update() {
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
             //FadeIn panel
@@ -118,11 +122,22 @@ public class PlayerController : MonoBehaviour {
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
 
-            if (lastPosition != this.gameObject.transform.position) 
+            if (lastPosition != this.gameObject.transform.position) { 
                 isMoving = true;
-            else 
+                lastPosition = transform.position;
+            } else 
                 isMoving = false;
         
+            if (isMoving) {
+                if (!aS.isPlaying) { 
+                    aS.Stop();
+                    aS.clip = playerStep;
+                    aS.loop = false;
+                    aS.Play();
+                }
+            } else {
+                aS.Stop();
+            }
 
             Vector3 offset = new Vector3(0f, 0f, pointerDistance);
             Vector3 desiredPosition = this.gameObject.transform.TransformPoint(offset);

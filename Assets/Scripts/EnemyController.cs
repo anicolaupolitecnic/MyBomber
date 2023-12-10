@@ -94,6 +94,7 @@ public class EnemyController : MonoBehaviour {
                         SetAnimationTo("Attack");
                         rb.velocity = Vector3.zero;
                     }
+                    ChasePlayer();
                     break;
 
                 case STDIE:
@@ -140,6 +141,7 @@ public class EnemyController : MonoBehaviour {
                 Debug.Log("attack");
             }
         } else {
+            Debug.Log("isChasingPlayer = false");
             isChasingPlayer = false;
         }
     }
