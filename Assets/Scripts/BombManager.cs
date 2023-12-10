@@ -107,10 +107,16 @@ public class BombManager : MonoBehaviour {
     }
 
     void CheckCollisions(Vector3 direction) {
-        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z), direction);
-        Debug.DrawRay(ray.origin, ray.direction * (gManager.numFire*2), Color.red, 1f);
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, gManager.numFire*2)) {
+        Ray ray1 = new Ray(new Vector3(transform.position.x - 0.75f, transform.position.y+0.5f, transform.position.z), direction);
+        Ray ray2 = new Ray(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), direction);
+        Ray ray3 = new Ray(new Vector3(transform.position.x + 0.75f, transform.position.y + 0.5f, transform.position.z), direction);
+        Debug.DrawRay(ray1.origin, ray1.direction * (gManager.numFire*2), Color.red, 1f);
+        Debug.DrawRay(ray2.origin, ray2.direction * (gManager.numFire * 2), Color.red, 1f);
+        Debug.DrawRay(ray3.origin, ray3.direction * (gManager.numFire * 2), Color.red, 1f);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray1, out hitInfo, gManager.numFire*2) ||
+            Physics.Raycast(ray2, out hitInfo, gManager.numFire * 2) ||
+            Physics.Raycast(ray3, out hitInfo, gManager.numFire * 2)) {
             if (hitInfo.collider.CompareTag("Block")) {
                 hitInfo.collider.gameObject.GetComponent<Explode>().DestroyCube();
             }

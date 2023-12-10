@@ -4,6 +4,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     PlayerControls controls;
@@ -32,7 +33,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float topClamp;
     [SerializeField] private float bottomClamp;
 
+    private Image panelPlayerDie;
+
+
     void Awake() {
+        panelPlayerDie = GameObject.FindGameObjectWithTag("PanelPlayerDie").GetComponent<Image>();
+
         controls = new PlayerControls();
         controls.Gameplay.Action.performed += ctx => Action();
 
@@ -97,6 +103,13 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
+            //FadeIn panel
+            if (panelPlayerDie.color.a > 0) {
+                Color c = panelPlayerDie.color;
+                c.a = 0;
+                panelPlayerDie.color = c;
+            }
+
             //MOVIMENT
             //Vector3 m = new Vector3(move.x * transform.forward.x, 0, move.y * transform.forward.z);
             Vector3 m = transform.forward * move.y + transform.right * move.x;
@@ -105,11 +118,11 @@ public class PlayerController : MonoBehaviour {
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
 
-            if (lastPosition != this.gameObject.transform.position) {
+            if (lastPosition != this.gameObject.transform.position) 
                 isMoving = true;
-            } else {
+            else 
                 isMoving = false;
-            }
+        
 
             Vector3 offset = new Vector3(0f, 0f, pointerDistance);
             Vector3 desiredPosition = this.gameObject.transform.TransformPoint(offset);
@@ -119,13 +132,20 @@ public class PlayerController : MonoBehaviour {
             //CAMERA
             float mouseX = (rotate.y) * mouseSensitivity * Time.deltaTime;
             float mouseY = (rotate.x) * mouseSensitivity * Time.deltaTime;
-            
+
             xRotation -= mouseX;
             xRotation = Mathf.Clamp(xRotation, topClamp, bottomClamp);
             cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            
+
             yRotation += mouseY;
             transform.localRotation = Quaternion.Euler(0f, yRotation, 0f);
+        } else {
+            if (gManager.numLives > 0)
+                if (panelPlayerDie.color.a < 255) {
+                    Color c = panelPlayerDie.color;
+                    c.a += 5f * Time.deltaTime;
+                    panelPlayerDie.color = c;
+                }
         }
     }
 }

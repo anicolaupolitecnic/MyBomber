@@ -13,8 +13,9 @@ public class EnemyController : MonoBehaviour {
     private AudioSource aS;
     [SerializeField] private AudioClip woosh;
     [SerializeField] private AudioClip die;
+    [SerializeField] private AudioClip step;
     [SerializeField] private float rangeOfView;
-    [SerializeField] private float attackRsange;
+    [SerializeField] private float attackRange;
     [SerializeField] private ParticleSystem smokePS;
     [SerializeField] private GameObject skeleton;
     [SerializeField] private GameObject player;
@@ -43,7 +44,11 @@ public class EnemyController : MonoBehaviour {
         aS = GetComponent<AudioSource>();
         gManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        state = prevState = STWALK;        
+        RestartEnemy();
+    }
+
+    public void RestartEnemy() {
+        state = prevState = STWALK;
         smokePS.Stop();
         randomIndex = Random.Range(0, spawnPoints.Count);
 
@@ -73,7 +78,7 @@ public class EnemyController : MonoBehaviour {
                     if (!animator.GetBool("Walk")) {
                         SetAnimationTo("Walk");
                     }
-                    
+
                     Vector3 newPosition = this.transform.position + transform.forward * 0.75f * Time.deltaTime;
                     rb.MovePosition(newPosition);
 
@@ -124,12 +129,12 @@ public class EnemyController : MonoBehaviour {
     void ChasePlayer() {
         float distanceToTarget = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distanceToTarget < attackRsange) {
+        if (gManager.isPlayerAlive && distanceToTarget < attackRange) {
             if (!isChasingPlayer) { 
                 navMeshAgent.destination = player.transform.position;
                 isChasingPlayer = true;
             }
-            if (distanceToTarget < (attackRsange/2)+ (attackRsange/4)) {
+            if (distanceToTarget < (attackRange/2)+ (attackRange/4)) {
                 MakeAttack();
                 //isChasingPlayer = false;
                 Debug.Log("attack");
@@ -173,7 +178,10 @@ public class EnemyController : MonoBehaviour {
     public void CheckPlayerHit() {
         if (isChasingPlayer) {
             Debug.Log("Player dead");
-            gManager.RespawnPlayer();
+            if (gManager.isPlayerAlive) {
+                gManager.KillPlayer();
+                RestartEnemy();
+            }
         }
     }
 

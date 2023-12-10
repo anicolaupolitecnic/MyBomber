@@ -7,9 +7,12 @@ public class TrapDoorManager : MonoBehaviour {
     private AudioSource aS;
     [SerializeField] private AudioClip openDoor;
 
+    private void Awake() {
+        aS = this.gameObject.transform.GetComponent<AudioSource>();
+    }
+
     void Start() {
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        aS = this.gameObject.transform.GetComponentInParent<AudioSource>();
     }
 
     private void OnEnable() {

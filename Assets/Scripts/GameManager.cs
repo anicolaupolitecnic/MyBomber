@@ -28,16 +28,14 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private AudioSource aS;
     [SerializeField] private AudioClip gameOver;
     [SerializeField] private AudioClip gameClear;
-
-    void Awake() {
-        //aS = this.gameObject.transform.GetComponentInParent<AudioSource>();
-        ResetPlayerStats();
-        numLives = 3;
-    }
+    [SerializeField] private AudioClip playerDie;
+    [SerializeField] private AudioClip playerSpawn;
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
-        player.transform.position = spwanPoint.transform.position;
+        ResetPlayerStats();
+        numLives = 3;
+        RespawnPlayer();
     }
 
     public void AddLive() {
@@ -95,7 +93,7 @@ public class GameManager : MonoBehaviour {
         tDeadEnemies.text = "" + numDeadEnemies;
     }
 
-    void ResetPlayerStats() {
+    public void ResetPlayerStats() {
         isPlayerAlive = true;
         numBombs = 1;
         numBombsThrown = 0;
@@ -105,27 +103,26 @@ public class GameManager : MonoBehaviour {
     }
 
     public void RespawnPlayer() {
-        isPlayerAlive = false;
-        SubstractLive();
-        if (numLives <= 0) {
-            tInfo.text = "HAS MORT!";
-            GameOver();
-        }
-        else
-            StartCoroutine(ReloadSceneAfterTime(2f));
+        player.GetComponent<CharacterController>().enabled = false;
+        player.transform.position = new Vector3(spwanPoint.transform.position.x, spwanPoint.transform.position.y, spwanPoint.transform.position.z);
+        player.GetComponent<CharacterController>().enabled = true;
+
+        aS.Stop();
+        aS.clip = playerSpawn;
+        aS.loop = false;
+        aS.Play();
     }
 
     private IEnumerator ReloadSceneAfterTime(float delay) {
         yield return new WaitForSeconds(delay);
         tInfo.enabled = false;
-        player.GetComponent<CharacterController>().enabled = false;
-        player.transform.position = new Vector3(spwanPoint.transform.position.x, spwanPoint.transform.position.y, spwanPoint.transform.position.z);
-        player.GetComponent<CharacterController>().enabled = true;
         ResetPlayerStats();
+        RespawnPlayer();
     }
 
     public void LevelClear() {
         tInfo.text = "HAS GUANYAT!";
+        isPlayerAlive = false;
         StartCoroutine(LoadSceneAfterTime(3f, gameClear));
     }
 
@@ -157,5 +154,19 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void KillPlayer() { 
+        isPlayerAlive = false;
+        SubstractLive();
+        aS.Stop();
+        aS.clip = playerDie;
+        aS.loop = false;
+        aS.Play();
+        if (numLives <= 0) {
+            tInfo.text = "HAS MORT!";
+            GameOver();
+        } else
+            StartCoroutine(ReloadSceneAfterTime(2f));
     }
 }
