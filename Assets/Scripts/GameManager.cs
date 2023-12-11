@@ -6,7 +6,6 @@ using TMPro;
 using Unity.AI.Navigation;
 
 public class GameManager : MonoBehaviour {
-    [SerializeField] private GameObject pauseMenu;
     public bool isPlayerAlive;
     public bool isIconKey;
     public int numBombs;
@@ -137,24 +136,6 @@ public class GameManager : MonoBehaviour {
         aS.Play();
         tInfo.enabled = true;
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene("MainMenu");
-    }
-
-    public void PauseMenu() {
-        Time.timeScale = 0;
-        isPlayerAlive = false;
-        pauseMenu.SetActive(true);
-    }
-
-    public void PauseMenuContinue() {
-        Time.timeScale = 1;
-        isPlayerAlive = true;
-        pauseMenu.SetActive(false);
-    }
-
-    public void PauseMenuExit() {
-        Time.timeScale = 1;
-        pauseMenu.SetActive(false);
         SceneManager.LoadScene("MainMenu");
     }
 

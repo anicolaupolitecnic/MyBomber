@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
+    [SerializeField] private MenuPauseController menuPauseController;
     PlayerControls controls;
     GameManager gManager;
     Vector2 move;
@@ -85,8 +86,8 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void Pause() { 
-        gManager.PauseMenu();
+    void Pause() {
+        menuPauseController.Pause();
     }
 
     bool HandleCollision(GameObject other) {

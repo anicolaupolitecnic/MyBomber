@@ -141,7 +141,6 @@ public class EnemyController : MonoBehaviour {
                 Debug.Log("attack");
             }
         } else {
-            Debug.Log("isChasingPlayer = false");
             isChasingPlayer = false;
         }
     }
