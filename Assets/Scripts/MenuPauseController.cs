@@ -12,13 +12,13 @@ public class MenuPauseController : MonoBehaviour {
     private void Start() {
         gManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         pauseMenu = this.transform.GetChild(0).transform.gameObject;
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(btnContinue);
     }
 
     public void Pause() {
         Time.timeScale = 0;
         gManager.isPlayerAlive = false;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(btnContinue);
         pauseMenu.SetActive(true);
     }
 

@@ -62,24 +62,26 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Action() {
-        Vector3 v = pointer.gameObject.transform.position;
-        v = new Vector3(v.x,v.y+8f, v.z);
-        Ray ray = new Ray(v, Vector3.down);
-        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.blue, 1f);
-        RaycastHit hit;
+        if (gManager.isPlayerAlive) {
+            Vector3 v = pointer.gameObject.transform.position;
+            v = new Vector3(v.x,v.y+8f, v.z);
+            Ray ray = new Ray(v, Vector3.down);
+            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.blue, 1f);
+            RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)) {
-            if (hit.collider.CompareTag("Block") || hit.collider.CompareTag("Wall") || HandleCollision(hit.collider.gameObject)) {
-                Debug.Log("BLOCKED");
-            } else if (hit.collider.CompareTag("Tile")) {
-                if (hit.collider.gameObject.transform.childCount == 0) {
-                    if (gManager.numBombsThrown < gManager.numBombs) {
-                        gManager.IncNumBombsThrown();
-                        Vector3 v1 = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+0.5f, hit.collider.gameObject.transform.position.z);
-                        newBomb = Instantiate(bomb, v1, hit.collider.gameObject.transform.rotation);
-                        newBomb.GetComponent<Collider>().enabled = true;
-                        newBomb.transform.SetParent(hit.collider.gameObject.transform);
+            if (Physics.Raycast(ray, out hit)) {
+                if (hit.collider.CompareTag("Block") || hit.collider.CompareTag("Wall") || HandleCollision(hit.collider.gameObject)) {
+                    Debug.Log("BLOCKED");
+                } else if (hit.collider.CompareTag("Tile")) {
+                    if (hit.collider.gameObject.transform.childCount == 0) {
+                        if (gManager.numBombsThrown < gManager.numBombs) {
+                            gManager.IncNumBombsThrown();
+                            Vector3 v1 = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+0.5f, hit.collider.gameObject.transform.position.z);
+                            newBomb = Instantiate(bomb, v1, hit.collider.gameObject.transform.rotation);
+                            newBomb.GetComponent<Collider>().enabled = true;
+                            newBomb.transform.SetParent(hit.collider.gameObject.transform);
 
+                        }
                     }
                 }
             }
