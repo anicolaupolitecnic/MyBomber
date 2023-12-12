@@ -5,13 +5,11 @@ using UnityEngine;
 public class MusicManager : MonoBehaviour {
     [SerializeField] private List<AudioClip> music;
     [SerializeField]private AudioSource aS;
+    private GameManager gManager;
 
     void Start() {
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         PlayNextSong();
-    }
-
-    void Update() {
-        
     }
 
     void PlayNextSong() {

@@ -14,8 +14,12 @@ public class MenuController : MonoBehaviour {
     [SerializeField] private GameObject btnPlay, btnSlideSound, btnCloseAboutMenu;
     [SerializeField] private List<GameObject> ps;
     [SerializeField] private ScrollRect myScrollRect;
+    [SerializeField] private AudioSource musicAS;
+    [SerializeField] private AudioSource fxAS;
+    private GameManager gManager;
 
     private void Start() {
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(btnPlay);
@@ -65,6 +69,9 @@ public class MenuController : MonoBehaviour {
 
     public void SetSoundVolume() {
         soundVolume = soundSlider.value;
-        textSoundVolume.text = soundVolume.ToString();
+        //textSoundVolume.text = soundVolume.ToString();
+        gManager.volume = soundSlider.value;
+        musicAS.volume = gManager.volume;
+        fxAS.volume = gManager.volume;
     }
 }

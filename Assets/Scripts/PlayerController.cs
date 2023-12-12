@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 
     void Awake() {
         panelPlayerDie = GameObject.FindGameObjectWithTag("PanelPlayerDie").GetComponent<Image>();
-        aS= GetComponent<AudioSource>();
+        aS= GameObject.FindGameObjectWithTag("fxAudioSource").GetComponent<AudioSource>();
 
         controls = new PlayerControls();
         controls.Gameplay.Action.performed += ctx => Action();

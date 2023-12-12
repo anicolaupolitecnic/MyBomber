@@ -18,6 +18,7 @@ TagManager:
   - Surface
   - IconKey
   - PanelPlayerDie
+  - Music_AudioSource
   layers:
   - Default
   - TransparentFX

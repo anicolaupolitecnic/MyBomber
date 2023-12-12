@@ -29,12 +29,15 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private AudioClip gameClear;
     [SerializeField] private AudioClip playerDie;
     [SerializeField] private AudioClip playerSpawn;
+    public float volume;
 
     void Start() {
-        player = GameObject.FindGameObjectWithTag("Player");
-        ResetPlayerStats();
-        numLives = 3;
-        RespawnPlayer();
+        if (SceneManager.GetActiveScene().name == "") {
+            player = GameObject.FindGameObjectWithTag("Level1");
+            ResetPlayerStats();
+            numLives = 3;
+            RespawnPlayer();
+        }
     }
 
     public void AddLive() {

@@ -41,7 +41,7 @@ public class EnemyController : MonoBehaviour {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        aS = GetComponent<AudioSource>();
+        aS = GameObject.FindGameObjectWithTag("fx_AudioSource").GetComponent<AudioSource>();
         gManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         RestartEnemy();
