@@ -19,6 +19,9 @@ TagManager:
   - IconKey
   - PanelPlayerDie
   - Music_AudioSource
+  - PlayerSpawnPoint
+  - HUD
+  - Level
   layers:
   - Default
   - TransparentFX

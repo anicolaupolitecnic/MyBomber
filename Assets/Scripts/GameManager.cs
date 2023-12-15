@@ -15,28 +15,27 @@ public class GameManager : MonoBehaviour {
     public int numFire;
     public int numLives;
     public int numDeadEnemies;
-    public GameObject spwanPoint;
-    [SerializeField] private GameObject player;
-    [SerializeField] private TextMeshProUGUI tInfo;
-    [SerializeField] private TextMeshProUGUI tBombs;
-    [SerializeField] private TextMeshProUGUI tBombsThrown;
-    [SerializeField] private TextMeshProUGUI tFire;
-    [SerializeField] private TextMeshProUGUI tLives;
-    [SerializeField] private TextMeshProUGUI tDeadEnemies;
+    private GameObject spwanPoint;
+    private GameObject player;
+    private HUDManager hud;
+    private AudioSource aSFX;
     [SerializeField] private GameObject iconKeyOn;
     [SerializeField] private GameObject closedDoor;
     [SerializeField] private GameObject openDoor;
     [SerializeField] private AudioClip gameOver;
     [SerializeField] private AudioClip gameClear;
     [SerializeField] private AudioClip playerDie;
-    [SerializeField] private AudioClip playerSpawn;
     public float volume;
 
     void Start() {
         state = 0;
+        aSFX = GameObject.FindGameObjectWithTag("FX_AudioSource").GetComponent<AudioSource>();
     }
 
     public void StartGame() {
+        player = GameObject.FindGameObjectWithTag("Level").GetComponent<LeveLManager>().spawnPoint;
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUDManager>();
+
         ResetPlayerStats();
         numLives = 3;
         RespawnPlayer();
@@ -90,20 +89,20 @@ public class GameManager : MonoBehaviour {
     }
 
     void UpdateHUD() {
-        tBombs.text = ""+numBombs;
-        tBombsThrown.text = ""+numBombsThrown;
-        tFire.text = ""+numFire;
-        tLives.text = ""+numLives;
-        tDeadEnemies.text = "" + numDeadEnemies;
+        hud.tBombs.text = ""+numBombs;
+        hud.tBombsThrown.text = ""+numBombsThrown;
+        hud.tFire.text = ""+numFire;
+        hud.tLives.text = ""+numLives;
+        hud.tDeadEnemies.text = "" + numDeadEnemies;
     }
 
     public void ResetPlayerStats() {
         isPlayerAlive = true;
         numBombs = 1;
         numBombsThrown = 0;
-        numFire = 1;    
+        numFire = 1;
         //numLives = 3;
-        tInfo.enabled = isIconKey = false; 
+        hud.tInfo.enabled = isIconKey = false; 
     }
 
     public void RespawnPlayer() {
@@ -111,21 +110,21 @@ public class GameManager : MonoBehaviour {
         player.transform.position = new Vector3(spwanPoint.transform.position.x, spwanPoint.transform.position.y, spwanPoint.transform.position.z);
         player.GetComponent<CharacterController>().enabled = true;
 
-        aS.Stop();
-        aS.clip = playerSpawn;
-        aS.loop = false;
-        aS.Play();
+        aSFX.Stop();
+        aSFX.clip = player.GetComponent<PlayerController>().playerSpawn;
+        aSFX.loop = false;
+        aSFX.Play();
     }
 
     private IEnumerator ReloadSceneAfterTime(float delay) {
         yield return new WaitForSeconds(delay);
-        tInfo.enabled = false;
+        hud.tInfo.enabled = false;
         ResetPlayerStats();
         RespawnPlayer();
     }
 
     public void LevelClear() {
-        tInfo.text = "HAS GUANYAT!";
+        hud.tInfo.text = "HAS GUANYAT!";
         isPlayerAlive = false;
         StartCoroutine(LoadSceneAfterTime(3f, gameClear));
     }
@@ -135,11 +134,11 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator LoadSceneAfterTime(float delay, AudioClip aC) {
-        aS.Stop();
-        aS.clip = aC;
-        aS.loop = false;
-        aS.Play();
-        tInfo.enabled = true;
+        aSFX.Stop();
+        aSFX.clip = aC;
+        aSFX.loop = false;
+        aSFX.Play();
+        hud.tInfo.enabled = true;
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("MainMenu");
     }
@@ -147,12 +146,12 @@ public class GameManager : MonoBehaviour {
     public void KillPlayer() { 
         isPlayerAlive = false;
         SubstractLive();
-        aS.Stop();
-        aS.clip = playerDie;
-        aS.loop = false;
-        aS.Play();
+        aSFX.Stop();
+        aSFX.clip = player.GetComponent<PlayerController>().playerDie;
+        aSFX.loop = false;
+        aSFX.Play();
         if (numLives <= 0) {
-            tInfo.text = "HAS MORT!";
+            hud.tInfo.text = "HAS MORT!";
             GameOver();
         } else
             StartCoroutine(ReloadSceneAfterTime(2f));

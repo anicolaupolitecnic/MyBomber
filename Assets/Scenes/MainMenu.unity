@@ -537,34 +537,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 83755754}
   m_CullTransparentMesh: 1
---- !u!1 &98118439 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5861059828602599321, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
-    type: 3}
-  m_PrefabInstance: {fileID: 1889112630}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &98118441 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 5861059828602599326, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
     type: 3}
   m_PrefabInstance: {fileID: 1889112630}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &98118442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 98118439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e695e84442c3fc940a96720aa94a02a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  music:
-  - {fileID: 8300000, guid: 9455c78a546350b45917ccaccee13e6e, type: 3}
-  aS1: {fileID: 0}
-  aS2: {fileID: 0}
 --- !u!1 &175457959
 GameObject:
   m_ObjectHideFlags: 0
@@ -1854,7 +1832,6 @@ MonoBehaviour:
   numFire: 1
   numLives: 3
   numDeadEnemies: 0
-  spwanPoint: {fileID: 0}
   player: {fileID: 0}
   tInfo: {fileID: 0}
   tBombs: {fileID: 0}
@@ -1865,11 +1842,9 @@ MonoBehaviour:
   iconKeyOn: {fileID: 0}
   closedDoor: {fileID: 0}
   openDoor: {fileID: 0}
-  aS: {fileID: 0}
   gameOver: {fileID: 8300000, guid: 2cba28ec3ed13e948aa77458fb4c5af8, type: 3}
   gameClear: {fileID: 8300000, guid: 31e00a12d4932cb4b92f1730a5eb6c78, type: 3}
   playerDie: {fileID: 8300000, guid: ae36f4a61367c9043b5f530dea6d4fa8, type: 3}
-  playerSpawn: {fileID: 8300000, guid: fb4412f26163e164e92b0543c0ee69ac, type: 3}
   volume: 0
 --- !u!4 &719175054
 Transform:
@@ -4367,12 +4342,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!82 &1817949332 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 624661788489400842, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
-    type: 3}
-  m_PrefabInstance: {fileID: 1889112630}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1889112630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4381,10 +4350,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 267671060832953535, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
+        type: 3}
+      propertyPath: aSFX
+      value: 
+      objectReference: {fileID: 8726930838290879699, guid: 339c93f314122c74ea311ca7b75b0376,
+        type: 3}
+    - target: {fileID: 267671060832953535, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
+        type: 3}
+      propertyPath: aSMusic1
+      value: 
+      objectReference: {fileID: 388129825}
+    - target: {fileID: 267671060832953535, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
+        type: 3}
+      propertyPath: aSMusic2
+      value: 
+      objectReference: {fileID: 1889112631}
     - target: {fileID: 624661788489400842, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
         type: 3}
       propertyPath: Loop
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5861059827485214084, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
         type: 3}
@@ -4448,6 +4433,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5861059829017229936, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
         type: 3}
+      propertyPath: m_Name
+      value: Music1Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5861059829017229936, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
+        type: 3}
       propertyPath: m_TagString
       value: Music_AudioSource
       objectReference: {fileID: 0}
@@ -4475,7 +4465,12 @@ PrefabInstance:
         type: 3}
       propertyPath: aS2
       value: 
-      objectReference: {fileID: 1817949332}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5861059829017229943, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5861059829017229943, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
         type: 3}
       propertyPath: music.Array.size
@@ -4516,15 +4511,18 @@ PrefabInstance:
       propertyPath: music.Array.data[6]
       value: 
       objectReference: {fileID: 8300000, guid: 459445fcfdf522824a37cf69a5d22418, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 624661788489400842, guid: 7b0b74c3b43c9b94093cc335c9d7b433, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5861059828602599321, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 98118442}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b0b74c3b43c9b94093cc335c9d7b433, type: 3}
+--- !u!82 &1889112631 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 211645948208468065, guid: 7b0b74c3b43c9b94093cc335c9d7b433,
+    type: 3}
+  m_PrefabInstance: {fileID: 1889112630}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1952693570
 GameObject:
   m_ObjectHideFlags: 0

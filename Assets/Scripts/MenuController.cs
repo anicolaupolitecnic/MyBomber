@@ -28,7 +28,7 @@ public class MenuController : MonoBehaviour {
     public void StartGame() {
         gManager.state = 1;
         SceneManager.LoadScene(1);
-        gManager.StartGame();
+        Invoke("gManager.StartGame()",1f);
     }
     
     public void CloseMenuOptions() {

@@ -126,7 +126,6 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-
     void ChasePlayer() {
         float distanceToTarget = Vector3.Distance(transform.position, player.transform.position);
 

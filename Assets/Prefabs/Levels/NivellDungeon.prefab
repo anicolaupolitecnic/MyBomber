@@ -913,9 +913,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7819859424416600700}
+  - component: {fileID: 2364182594539799823}
   m_Layer: 0
   m_Name: NivellDungeon
-  m_TagString: Untagged
+  m_TagString: Level
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -948,6 +949,19 @@ Transform:
   - {fileID: 2184246418560327625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2364182594539799823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819859424416600699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e864fc57ccadfc4687fe50a92744c9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 9198414111948058266}
 --- !u!1 &7819859424458735417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1298,7 @@ GameObject:
   - component: {fileID: 3893628474116960184}
   m_Layer: 0
   m_Name: SpawnPoint
-  m_TagString: Untagged
+  m_TagString: PlayerSpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

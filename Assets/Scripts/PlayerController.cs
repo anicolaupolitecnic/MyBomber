@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour {
 
     private AudioSource aS;
     [SerializeField] private AudioClip playerStep;
+    [SerializeField] public AudioClip playerSpawn;
+    [SerializeField] public AudioClip playerDie;
 
     void Awake() {
         panelPlayerDie = GameObject.FindGameObjectWithTag("PanelPlayerDie").GetComponent<Image>();
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviour {
                     Debug.Log("BLOCKED");
                 } else if (hit.collider.CompareTag("Tile")) {
                     if (hit.collider.gameObject.transform.childCount == 0) {
+
                         if (gManager.numBombsThrown < gManager.numBombs) {
                             Debug.Log("TILE");
                             gManager.IncNumBombsThrown();
@@ -110,6 +113,8 @@ public class PlayerController : MonoBehaviour {
 
     Vector3 v = new Vector3 (0, 0, 0);
     void Update() {
+        Debug.Log("numBombsThrown: " + gManager.numBombsThrown);
+
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
             //FadeIn panel
             if (panelPlayerDie.color.a > 0) {
