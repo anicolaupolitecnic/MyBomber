@@ -20,7 +20,7 @@ public class BombManager : MonoBehaviour {
         initTime = Time.time;
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         surface = GameObject.FindGameObjectWithTag("Surface").GetComponent<NavMeshSurface>();
-        aS = GameObject.FindGameObjectWithTag("fx_AudioSource").GetComponent<AudioSource>();
+        aS = GameObject.FindGameObjectWithTag("FX_AudioSource").GetComponent<AudioSource>();
     }
 
     void Update() {

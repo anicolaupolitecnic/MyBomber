@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 
     void Awake() {
         panelPlayerDie = GameObject.FindGameObjectWithTag("PanelPlayerDie").GetComponent<Image>();
-        aS= GameObject.FindGameObjectWithTag("fxAudioSource").GetComponent<AudioSource>();
+        aS= GameObject.FindGameObjectWithTag("FX_AudioSource").GetComponent<AudioSource>();
 
         controls = new PlayerControls();
         controls.Gameplay.Action.performed += ctx => Action();
@@ -64,10 +64,10 @@ public class PlayerController : MonoBehaviour {
     void Action() {
         if (gManager.isPlayerAlive) {
             Vector3 v = pointer.gameObject.transform.position;
-            v = new Vector3(v.x,v.y+8f, v.z);
+            v = new Vector3(v.x,v.y+4f, v.z);
             Ray ray = new Ray(v, Vector3.down);
-            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.blue, 1f);
             RaycastHit hit;
+            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.blue, 1f);
 
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.collider.CompareTag("Block") || hit.collider.CompareTag("Wall") || HandleCollision(hit.collider.gameObject)) {
@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour {
                 } else if (hit.collider.CompareTag("Tile")) {
                     if (hit.collider.gameObject.transform.childCount == 0) {
                         if (gManager.numBombsThrown < gManager.numBombs) {
+                            Debug.Log("TILE");
                             gManager.IncNumBombsThrown();
                             Vector3 v1 = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+0.5f, hit.collider.gameObject.transform.position.z);
                             newBomb = Instantiate(bomb, v1, hit.collider.gameObject.transform.rotation);

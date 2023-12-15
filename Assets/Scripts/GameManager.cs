@@ -6,6 +6,8 @@ using TMPro;
 using Unity.AI.Navigation;
 
 public class GameManager : MonoBehaviour {
+    public int state;
+    public int prevState;
     public bool isPlayerAlive;
     public bool isIconKey;
     public int numBombs;
@@ -24,7 +26,6 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameObject iconKeyOn;
     [SerializeField] private GameObject closedDoor;
     [SerializeField] private GameObject openDoor;
-    [SerializeField] private AudioSource aS;
     [SerializeField] private AudioClip gameOver;
     [SerializeField] private AudioClip gameClear;
     [SerializeField] private AudioClip playerDie;
@@ -32,12 +33,13 @@ public class GameManager : MonoBehaviour {
     public float volume;
 
     void Start() {
-        if (SceneManager.GetActiveScene().name == "") {
-            player = GameObject.FindGameObjectWithTag("Level1");
-            ResetPlayerStats();
-            numLives = 3;
-            RespawnPlayer();
-        }
+        state = 0;
+    }
+
+    public void StartGame() {
+        ResetPlayerStats();
+        numLives = 3;
+        RespawnPlayer();
     }
 
     public void AddLive() {
