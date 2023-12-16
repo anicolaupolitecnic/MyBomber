@@ -29,7 +29,6 @@ public class MenuPauseController : MonoBehaviour {
     }
 
     public void PauseMenuExit() {
-        gManager.state = 0;
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
         SceneManager.LoadScene("MainMenu");

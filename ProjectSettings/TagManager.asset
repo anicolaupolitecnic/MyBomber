@@ -22,6 +22,7 @@ TagManager:
   - PlayerSpawnPoint
   - HUD
   - Level
+  - SoundManager
   layers:
   - Default
   - TransparentFX

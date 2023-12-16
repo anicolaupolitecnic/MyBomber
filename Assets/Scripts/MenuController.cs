@@ -19,16 +19,13 @@ public class MenuController : MonoBehaviour {
     private GameManager gManager;
 
     private void Start() {
-        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(btnPlay);
     }
 
     public void StartGame() {
-        gManager.state = 1;
         SceneManager.LoadScene(1);
-        Invoke("gManager.StartGame()",1f);
     }
     
     public void CloseMenuOptions() {

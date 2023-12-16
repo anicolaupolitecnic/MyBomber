@@ -5,28 +5,34 @@ using UnityEngine;
 public class MusicManager : MonoBehaviour {
     [SerializeField]private AudioSource aSMusic1;
     [SerializeField] private AudioSource aSMusic2;
-    [SerializeField] private AudioSource aSFX;
+    [SerializeField] public AudioSource aSFX;
     [SerializeField] private List<AudioClip> music;
+
+    [SerializeField] public AudioClip gameOver;
+    [SerializeField] public AudioClip gameClear;
+    
+    [SerializeField] public AudioClip playerDie;
+    [SerializeField] public AudioClip playerSpawn;
+    [SerializeField] public AudioClip playerStep;
+
+    [SerializeField] public AudioClip wick;
+    [SerializeField] public AudioClip explode;
 
     private GameManager gManager;
 
     void Start() {
-        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        MainMenuMusic();
+    }
+
+    public void MainMenuMusic() {
         aSMusic1.clip = music[0];
         aSMusic1.Play();
     }
 
-    private void Update() {
-        if (gManager.prevState != gManager.state) {
-            gManager.prevState = gManager.state;
-            if (gManager.state == 0) {
-                aSMusic1.clip = music[0];
-            } else {
-                aSMusic1.clip = music[1];
-                PlayNextAmbientSound();
-            }
-            aSMusic1.Play();
-        }
+    public void GameMusic() {
+        aSMusic1.clip = music[1];
+        PlayNextAmbientSound();
+        aSMusic1.Play();
     }
 
     void PlayNextAmbientSound() {
@@ -34,4 +40,9 @@ public class MusicManager : MonoBehaviour {
         aSMusic2.Play();
         Invoke("PlayNextSong", aSMusic1.clip.length);
     }
+
+    public void PlayFX(AudioClip fx) { 
+        aSFX.clip = fx; 
+    }
+
 }

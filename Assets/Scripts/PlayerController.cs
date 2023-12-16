@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
+    private MusicManager musicManager;
     [SerializeField] private MenuPauseController menuPauseController;
     PlayerControls controls;
     GameManager gManager;
@@ -36,14 +37,8 @@ public class PlayerController : MonoBehaviour {
 
     private Image panelPlayerDie;
 
-    private AudioSource aS;
-    [SerializeField] private AudioClip playerStep;
-    [SerializeField] public AudioClip playerSpawn;
-    [SerializeField] public AudioClip playerDie;
-
     void Awake() {
         panelPlayerDie = GameObject.FindGameObjectWithTag("PanelPlayerDie").GetComponent<Image>();
-        aS= GameObject.FindGameObjectWithTag("FX_AudioSource").GetComponent<AudioSource>();
 
         controls = new PlayerControls();
         controls.Gameplay.Action.performed += ctx => Action();
@@ -61,6 +56,7 @@ public class PlayerController : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        musicManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<MusicManager>();
     }
 
     void Action() {
@@ -113,8 +109,6 @@ public class PlayerController : MonoBehaviour {
 
     Vector3 v = new Vector3 (0, 0, 0);
     void Update() {
-        Debug.Log("numBombsThrown: " + gManager.numBombsThrown);
-
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isPlayerAlive) {
             //FadeIn panel
             if (panelPlayerDie.color.a > 0) {
@@ -138,14 +132,14 @@ public class PlayerController : MonoBehaviour {
                 isMoving = false;
         
             if (isMoving) {
-                if (!aS.isPlaying) { 
-                    aS.Stop();
-                    aS.clip = playerStep;
-                    aS.loop = false;
-                    aS.Play();
+                if (!musicManager.aSFX.isPlaying) {
+                    musicManager.aSFX.Stop();
+                    musicManager.aSFX.clip = musicManager.playerStep;
+                    musicManager.aSFX.loop = false;
+                    musicManager.aSFX.Play();
                 }
             } else {
-                aS.Stop();
+                musicManager.aSFX.Stop();
             }
 
             Vector3 offset = new Vector3(0f, 0f, pointerDistance);

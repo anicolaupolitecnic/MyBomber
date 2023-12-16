@@ -12,15 +12,18 @@ public class BombManager : MonoBehaviour {
 	[SerializeField] private float radius;
     private GameManager gManager;
     private NavMeshSurface surface;
-    private AudioSource aS;
-    [SerializeField] private AudioClip wick;
-    [SerializeField] private AudioClip explode;
+    private MusicManager musicManager;
 
     void Start() {
         initTime = Time.time;
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         surface = GameObject.FindGameObjectWithTag("Surface").GetComponent<NavMeshSurface>();
-        aS = GameObject.FindGameObjectWithTag("FX_AudioSource").GetComponent<AudioSource>();
+        musicManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<MusicManager>();
+
+        musicManager.aSFX.Stop();
+        musicManager.aSFX.clip = musicManager.wick;
+        musicManager.aSFX.loop = true;
+        musicManager.aSFX.Play();
     }
 
     void Update() {
@@ -46,10 +49,10 @@ public class BombManager : MonoBehaviour {
         CheckCollisions(Vector3.right);
         CheckCollisions(Vector3.down);
         
-        aS.Stop();
-        aS.clip = explode;
-        aS.loop = false;
-        aS.Play();
+        musicManager.aSFX.Stop();
+        musicManager.aSFX.clip = musicManager.explode;
+        musicManager.aSFX.loop = false;
+        musicManager.aSFX.Play();
         PlayExplosionPS(this.gameObject.transform);
 
         for (int i = 0; i < gManager.numFire; i++) {
