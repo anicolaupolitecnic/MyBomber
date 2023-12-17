@@ -147,7 +147,7 @@ public class BombManager : MonoBehaviour {
     }
 
     void HandleCollision(GameObject other) {
-        if (other.CompareTag("IconFire") || other.CompareTag("IconBomb") || other.CompareTag("IconKey")) {
+        if (other.CompareTag("IconFire") || other.CompareTag("IconBomb")) {
             Destroy(other.gameObject);
         }
     }
