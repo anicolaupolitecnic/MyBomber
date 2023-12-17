@@ -18,12 +18,6 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] public AudioClip wick;
     [SerializeField] public AudioClip explode;
 
-    private GameManager gManager;
-
-    void Start() {
-        MainMenuMusic();
-    }
-
     public void MainMenuMusic() {
         aSMusic1.clip = music[0];
         aSMusic1.Play();
@@ -41,8 +35,10 @@ public class MusicManager : MonoBehaviour {
         Invoke("PlayNextSong", aSMusic1.clip.length);
     }
 
-    public void PlayFX(AudioClip fx) { 
-        aSFX.clip = fx; 
+    public void PlayFX(AudioClip fx, bool b) {
+        aSFX.Stop();
+        aSFX.loop = b;
+        aSFX.clip = fx;
+        aSFX.Play();
     }
-
 }

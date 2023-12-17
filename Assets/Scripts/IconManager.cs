@@ -11,7 +11,7 @@ public class IconManager : MonoBehaviour {
 
     void Start() {
         gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        aS = GameObject.FindGameObjectWithTag("FX_AudioSource").GetComponent<AudioSource>();
+        aS = GetComponent<AudioSource>();
     }
 
     void Update() {

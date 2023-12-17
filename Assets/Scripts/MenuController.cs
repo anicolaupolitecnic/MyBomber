@@ -17,11 +17,14 @@ public class MenuController : MonoBehaviour {
     [SerializeField] private AudioSource musicAS;
     [SerializeField] private AudioSource fxAS;
     private GameManager gManager;
+    private MusicManager musicManager;
 
     private void Start() {
         soundSlider.onValueChanged.AddListener(delegate { SetSoundVolume(); });
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(btnPlay);
+        musicManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<MusicManager>();
+        musicManager.MainMenuMusic();
     }
 
     public void StartGame() {

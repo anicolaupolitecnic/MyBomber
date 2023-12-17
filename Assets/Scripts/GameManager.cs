@@ -23,12 +23,12 @@ public class GameManager : MonoBehaviour {
 
     public float volume;
 
-    void Start() {
+    void Awake() {
         musicManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<MusicManager>();
         musicManager.GameMusic();
     }
 
-    private void OnEnable() {
+    void Start() {
         ResetPlayerStats();
         numLives = 3;
         RespawnPlayer();
@@ -95,10 +95,6 @@ public class GameManager : MonoBehaviour {
         player.transform.position = new Vector3(spwanPoint.transform.position.x, spwanPoint.transform.position.y, spwanPoint.transform.position.z);
         player.GetComponent<CharacterController>().enabled = true;
         
-        musicManager.aSFX.Stop();
-        musicManager.aSFX.clip = musicManager.playerSpawn;
-        musicManager.aSFX.loop = false;
-        musicManager.aSFX.Play();
     }
 
     private IEnumerator ReloadSceneAfterTime(float delay) {
@@ -119,10 +115,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator LoadSceneAfterTime(float delay, AudioClip aC) {
-        musicManager.aSFX.Stop();
-        musicManager.aSFX.clip = aC;
-        musicManager.aSFX.loop = false;
-        musicManager.aSFX.Play();
+        musicManager.PlayFX(aC, false);
         hud.tInfo.enabled = true;
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("MainMenu");
@@ -131,10 +124,8 @@ public class GameManager : MonoBehaviour {
     public void KillPlayer() { 
         isPlayerAlive = false;
         SubstractLive();
-        musicManager.aSFX.Stop();
-        musicManager.aSFX.clip = musicManager.playerDie;
-        musicManager.aSFX.loop = false;
-        musicManager.aSFX.Play();
+        musicManager.PlayFX(musicManager.playerDie, false);
+
         if (numLives <= 0) {
             hud.tInfo.text = "HAS MORT!";
             GameOver();

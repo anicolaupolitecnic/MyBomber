@@ -50,13 +50,14 @@ public class PlayerController : MonoBehaviour {
 
         controls.Gameplay.Rotate.performed += ctx => rotate = ctx.ReadValue<Vector2>();
         controls.Gameplay.Rotate.canceled += ctx => rotate = Vector2.zero;
+
+        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        musicManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<MusicManager>();
     }
 
     void Start() {
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
-        gManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        musicManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<MusicManager>();
     }
 
     void Action() {
@@ -74,7 +75,6 @@ public class PlayerController : MonoBehaviour {
                     if (hit.collider.gameObject.transform.childCount == 0) {
 
                         if (gManager.numBombsThrown < gManager.numBombs) {
-                            Debug.Log("TILE");
                             gManager.IncNumBombsThrown();
                             Vector3 v1 = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+0.5f, hit.collider.gameObject.transform.position.z);
                             newBomb = Instantiate(bomb, v1, hit.collider.gameObject.transform.rotation);
@@ -133,10 +133,7 @@ public class PlayerController : MonoBehaviour {
         
             if (isMoving) {
                 if (!musicManager.aSFX.isPlaying) {
-                    musicManager.aSFX.Stop();
-                    musicManager.aSFX.clip = musicManager.playerStep;
-                    musicManager.aSFX.loop = false;
-                    musicManager.aSFX.Play();
+                    musicManager.PlayFX(musicManager.playerStep, false);
                 }
             } else {
                 musicManager.aSFX.Stop();
